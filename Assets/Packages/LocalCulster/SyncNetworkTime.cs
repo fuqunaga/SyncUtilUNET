@@ -41,12 +41,4 @@ public class SyncNetworkTime : MonoBehaviour
             }
         };
     }
-
-    /*
-    public void Update()
-    {
-        if ( NetworkServer.active)
-        NetworkServer.SendToAll(CustomMsgType.NetworkTime, new NetworkTimeMessage() { time = Network.time });
-    }
-    */
 }

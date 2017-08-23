@@ -11,6 +11,9 @@ namespace LocalClustering
     [RequireComponent(typeof(Camera))]
     public class LatencyCheckerLine : MonoBehaviour
     {
+        public Color _timeColor = Color.white;
+        public Color _networkTimeColor = Color.gray;
+
         public enum Mode
         {
             Horizontal,
@@ -54,8 +57,8 @@ namespace LocalClustering
         {
             datas.ForEach(data =>
             {
-                if (_timeEnable) DrawLine(data, LocalCluster.time, _timeStride, Color.white);
-                if (_networkTimeEnable) DrawLine(data, (float)LocalCluster.networkTime, _networkTimeStride, Color.gray);
+                if (_timeEnable) DrawLine(data, LocalCluster.time, _timeStride, _timeColor);
+                if (_networkTimeEnable) DrawLine(data, (float)LocalCluster.networkTime, _networkTimeStride, _networkTimeColor);
             });
         }
 

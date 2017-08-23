@@ -9,6 +9,7 @@ using UnityEngine.Networking;
 namespace LocalClustering
 {
     [RequireComponent(typeof(NetworkManager))]
+    [RequireComponent(typeof(LatencyChecker), typeof(SyncTimeManager), typeof(SyncNetworkTime))]
     public class NetworkManagerController : MonoBehaviour
     {
         #region TypeDefine
@@ -71,7 +72,8 @@ namespace LocalClustering
 
         public virtual void OnGUI()
         {
-            if (!NetworkManager.singleton.isNetworkActive)
+            var mgr = NetworkManager.singleton;
+            if (mgr != null && !mgr.isNetworkActive)
             {
                 GUILayout.Label("LocalCluster Manual Boot");
 
@@ -113,6 +115,7 @@ namespace LocalClustering
         {
             using (var h = new GUILayout.HorizontalScope())
             {
+                GUILayout.Label("NetworkManagerController");
                 GUILayout.Label(LocalCluster.isHost ? "Host" : (LocalCluster.isServer ? "Server" : (LocalCluster.isClient ? "Client" : "StandAlone")));
                 if (LocalCluster.isActive)
                 {
@@ -123,24 +126,28 @@ namespace LocalClustering
                 }
             }
 
-            DebugMenuInternal();
-
-            if (_fold == null)
+            GUIUtil.Indent(() =>
             {
-                _fold = new GUIUtil.Fold("Time Debug", () =>
+
+                DebugMenuInternal();
+
+                if (_fold == null)
                 {
-                    GUILayout.Label(string.Format("SyncTime: {0:0.000}", LocalCluster.time));
-                    GUILayout.Label(string.Format("Network.time Synced/Orig: {0:0.000} / {1:0.000}", LocalCluster.networkTime, Network.time));
-
-                    LatencyChecker.Instance._conectionLatencyTable.ToList().ForEach(pair =>
+                    _fold = new GUIUtil.Fold("Time Debug", () =>
                     {
-                        var data = pair.Value;
-                        GUILayout.Label(string.Format("ConnId: {0}  Latency: {1:0.000} Average:{2:0.000} " + (data._recieved ? "✔" : ""), pair.Key, data.Last, data.average));
-                    });
-                });
-            }
+                        GUILayout.Label(string.Format("SyncTime: {0:0.000}", LocalCluster.time));
+                        GUILayout.Label(string.Format("Network.time Synced/Orig: {0:0.000} / {1:0.000}", LocalCluster.networkTime, Network.time));
 
-            _fold.OnGUI();
+                        LatencyChecker.Instance._conectionLatencyTable.ToList().ForEach(pair =>
+                        {
+                            var data = pair.Value;
+                            GUILayout.Label(string.Format("ConnId: {0}  Latency: {1:0.000} Average:{2:0.000} " + (data._recieved ? "✔" : ""), pair.Key, data.Last, data.average));
+                        });
+                    });
+                }
+
+                _fold.OnGUI();
+            });
         }
 
 
