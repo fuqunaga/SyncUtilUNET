@@ -14,6 +14,11 @@
         public override bool _autoConnect { get { return autoConnect; } }
         public override float _autoConnectInterval { get { return autoConnectInterval; } }
 
+        protected override void OnGUINetworkSetting()
+        {
+            DebugMenuInternal();
+        }
+
         protected override void DebugMenuInternal()
         {
             networkAddress = GUIUtil.Field(networkAddress, "Host Address");

@@ -32,7 +32,7 @@ namespace SyncUtil
             public DebugDraw debugDraw { get { return _debugDraw ?? (_debugDraw = (camera.GetComponent<DebugDraw>() ?? camera.gameObject.AddComponent<DebugDraw>())); } }
         }
 
-        List<CameraData> _datas = new List<CameraData>();
+        protected List<CameraData> _datas = new List<CameraData>();
         public List<CameraData> Datas { get { return _datas; } }
 
         float _width = 5f;
@@ -116,7 +116,6 @@ namespace SyncUtil
                             data.mode = GUIUtil.Field(data.mode);
                         }
                     });
-
                 });
             }
         }

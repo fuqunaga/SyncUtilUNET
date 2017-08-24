@@ -215,7 +215,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 645329938}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c1aa683b878339d49869235010dc9aab, type: 3}
+  m_Script: {fileID: 11500000, guid: 5f5a812b85d2fcd4393cecd90c1333e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_NetworkPort: 7777
@@ -230,8 +230,8 @@ MonoBehaviour:
   m_PlayerPrefab: {fileID: 0}
   m_AutoCreatePlayer: 0
   m_PlayerSpawnMethod: 0
-  m_OfflineScene: LatencyChecker_offline
-  m_OnlineScene: LatencyChecker_online
+  m_OfflineScene: Offline
+  m_OnlineScene: PreRendering_online
   m_SpawnPrefabs: []
   m_CustomConfig: 0
   m_MaxConnections: 4
@@ -325,7 +325,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 645329938}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed8d2d4bb16e9ab4c9c107589436581b, type: 3}
+  m_Script: {fileID: 11500000, guid: 6029163917ed01d4e905ab9d5d59892c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &645329943
@@ -336,7 +336,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 645329938}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 457e4523ae756ad40aa47735caf7775d, type: 3}
+  m_Script: {fileID: 11500000, guid: 9102b09670c03d04ba5a69c2a2dc41f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &645329944
@@ -347,7 +347,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 645329938}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a099809787230b044a22d74145ac804e, type: 3}
+  m_Script: {fileID: 11500000, guid: d2aacaba6694edd41bed42e69aa766d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1449568912
