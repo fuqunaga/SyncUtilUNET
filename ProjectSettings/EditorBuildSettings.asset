@@ -6,11 +6,11 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Packages/LocalCulster/Sample/LatencyChecker.unity
+    path: Assets/Packages/SyncUtil/Sample/LatencyChecker.unity
     guid: d89fce6642b50274a86bfc7e146d9ecb
   - enabled: 1
-    path: Assets/Packages/LocalCulster/Sample/LatencyChecker_online.unity
+    path: Assets/Packages/SyncUtil/Sample/LatencyChecker_online.unity
     guid: 69d81700c7826b948ad6e0d7f95623c0
   - enabled: 1
-    path: Assets/Packages/LocalCulster/Sample/LatencyChecker_offline.unity
+    path: Assets/Packages/SyncUtil/Sample/LatencyChecker_offline.unity
     guid: a80a9c1f76f2363498c1d08ad0928430
