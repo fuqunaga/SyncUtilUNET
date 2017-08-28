@@ -6,16 +6,30 @@ using UnityEngine.Networking;
 
 namespace SyncUtil
 {
-    public class NetworkSpawner : MonoBehaviour
+    [ExecuteInEditMode]
+    public class Spawner : MonoBehaviour
     {
         public List<NetworkIdentity> _prefabs = new List<NetworkIdentity>();
 
-        void Start()
+#if UNITY_EDITOR
+        NetworkManager _networkManager;
+        private void Update()
         {
-            SyncNetworkManager.singleton._OnStartServer += () =>
+            var nm = _networkManager ?? (_networkManager = FindObjectOfType<NetworkManager>());
+            var diffGo = _prefabs.Select(ni => ni.gameObject).Except(nm.spawnPrefabs);
+            nm.spawnPrefabs.AddRange(diffGo);
+        }
+#endif
+
+        private void Start()
+        {
+            if (Application.isPlaying)
             {
-                StartCoroutine(DelaySpawn());
-            };
+                if (SyncNet.isServer)
+                {
+                    StartCoroutine(DelaySpawn());
+                }
+            }
         }
 
         IEnumerator DelaySpawn()
@@ -28,8 +42,10 @@ namespace SyncUtil
             .ToList()
             .ForEach(go =>
             {
+                Debug.Log(go.name);
+
                 go.transform.SetParent(transform);
-                NetworkServer.Spawn(go);
+                SyncNet.Spawn(go);
             });
         }
     }

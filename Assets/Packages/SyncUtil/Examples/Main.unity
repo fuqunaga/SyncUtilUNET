@@ -200,6 +200,7 @@ GameObject:
   - component: {fileID: 645329942}
   - component: {fileID: 645329944}
   - component: {fileID: 645329943}
+  - component: {fileID: 645329945}
   m_Layer: 0
   m_Name: SyncNetworkManager
   m_TagString: Untagged
@@ -231,8 +232,9 @@ MonoBehaviour:
   m_AutoCreatePlayer: 0
   m_PlayerSpawnMethod: 0
   m_OfflineScene: Offline
-  m_OnlineScene: PreRendering_online
-  m_SpawnPrefabs: []
+  m_OnlineScene: 
+  m_SpawnPrefabs:
+  - {fileID: 1087970129871348, guid: 922b63f130b1bf44a85995243a02ef26, type: 2}
   m_CustomConfig: 0
   m_MaxConnections: 4
   m_ConnectionConfig:
@@ -350,6 +352,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2aacaba6694edd41bed42e69aa766d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &645329945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 645329938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 148f6fea792e4c94287a9a281f527cc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _onlineScenes:
+  - {fileID: 102900000, guid: 69d81700c7826b948ad6e0d7f95623c0, type: 3}
+  - {fileID: 102900000, guid: 32e288e16873fec4cb5ec41a0123946f, type: 3}
+  _idx: 1
+  _onlineSceneNames:
+  - PreRendering
+  - InstanceRondom
 --- !u!1 &1449568912
 GameObject:
   m_ObjectHideFlags: 0
@@ -387,7 +407,7 @@ Camera:
   field of view: 60
   orthographic: 0
   orthographic size: 5
-  m_Depth: 0
+  m_Depth: -10
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295

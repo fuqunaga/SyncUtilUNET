@@ -1,4 +1,4 @@
-﻿Shader "Custom/LocalCluster/SimpleCircle" { 
+﻿Shader "Custom/SyncUtil/SimpleCircle" { 
 	Properties { 
 		_Color ("Main Color", Color) = (1,1,1,1)
 	}

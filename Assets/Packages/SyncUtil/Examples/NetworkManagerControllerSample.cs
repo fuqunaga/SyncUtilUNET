@@ -1,5 +1,8 @@
-﻿namespace SyncUtil
+﻿using UnityEngine;
+
+namespace SyncUtil
 {
+    [RequireComponent(typeof(SceneSelector))]
     public class NetworkManagerControllerSample : NetworkManagerController
     {
         public string networkAddress = "localhost";
@@ -14,8 +17,17 @@
         public override bool _autoConnect { get { return autoConnect; } }
         public override float _autoConnectInterval { get { return autoConnectInterval; } }
 
+        SceneSelector _sceneSelector;
+
+        public override void Start()
+        {
+            base.Start();
+            _sceneSelector = GetComponent<SceneSelector>();
+        }
+
         protected override void OnGUINetworkSetting()
         {
+            _sceneSelector.DebugMenu();
             DebugMenuInternal();
         }
 

@@ -29,7 +29,7 @@ namespace SyncUtil
         public virtual float _autoConnectInterval { get; } = 10f;
 
 
-        public void Start()
+        public virtual void Start()
         {
             UpdateManager();
 
@@ -68,14 +68,12 @@ namespace SyncUtil
             }
         }
 
-
-
         public virtual void OnGUI()
         {
             var mgr = NetworkManager.singleton;
             if (mgr != null && !mgr.isNetworkActive)
             {
-                GUILayout.Label("LocalCluster Manual Boot");
+                GUILayout.Label("SyncUtil Manual Boot");
 
                 GUIUtil.Indent(() =>
                 {

@@ -83,7 +83,7 @@ namespace SyncUtil
 #if INCLUDE_UPDATE
                         _lastMsg = msg.ReadMessage<LatencyMessage>();
 #else
-                        LocalCluster.client.Send(CustomMsgType.Latency, msg.ReadMessage<LatencyMessage>());
+                        SyncNet.client.Send(CustomMsgType.Latency, msg.ReadMessage<LatencyMessage>());
 #endif
                     });
 

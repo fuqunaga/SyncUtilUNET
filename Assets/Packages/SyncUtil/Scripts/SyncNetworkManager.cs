@@ -14,7 +14,7 @@ namespace SyncUtil
     {
         public static new SyncNetworkManager singleton { get { return NetworkManager.singleton as SyncNetworkManager; } }
 
-        #region unload scene
+        #region unload other scenes
 #if UNITY_EDITOR
         [InitializeOnLoadMethod]
         static void CheckPlaymodeState()
@@ -27,10 +27,10 @@ namespace SyncUtil
                     var mgr = FindObjectOfType<NetworkManager>(); // singleton maybe not ready.
                     Assert.IsNotNull(mgr);
 
-                    (new[] { mgr.onlineScene, mgr.offlineScene })
-                    .Where(name => !string.IsNullOrEmpty(name))
-                    .Select(name => SceneManager.GetSceneByName(name))
-                    .Where(scene => scene.isLoaded)
+                    Enumerable.Range(0, SceneManager.sceneCount)
+                    .Select(i => SceneManager.GetSceneAt(i))
+                    .Where(s => s != SceneManager.GetActiveScene())
+                    .Where(s => s.isLoaded)
                     .ToList()
                     .ForEach(scene => 
                     {
