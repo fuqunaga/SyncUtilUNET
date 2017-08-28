@@ -22,8 +22,8 @@ namespace SyncUtil
         private void OnGUI()
         {
             _networkManagerController.DebugMenu();
-            _preRendering.DebugMenu();
-            _laytencyCheckerLine.DebugMenu();
+            if ( _preRendering != null ) _preRendering.DebugMenu();
+            if (_laytencyCheckerLine != null ) _laytencyCheckerLine.DebugMenu();
         }
     }
 }

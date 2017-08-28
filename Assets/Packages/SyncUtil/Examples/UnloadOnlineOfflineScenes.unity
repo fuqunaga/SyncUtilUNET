@@ -185,7 +185,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &645329938
 GameObject:
@@ -196,11 +196,6 @@ GameObject:
   m_Component:
   - component: {fileID: 645329940}
   - component: {fileID: 645329939}
-  - component: {fileID: 645329941}
-  - component: {fileID: 645329942}
-  - component: {fileID: 645329944}
-  - component: {fileID: 645329943}
-  - component: {fileID: 645329945}
   m_Layer: 0
   m_Name: SyncNetworkManager
   m_TagString: Untagged
@@ -231,10 +226,9 @@ MonoBehaviour:
   m_PlayerPrefab: {fileID: 0}
   m_AutoCreatePlayer: 0
   m_PlayerSpawnMethod: 0
-  m_OfflineScene: Offline
-  m_OnlineScene: 
-  m_SpawnPrefabs:
-  - {fileID: 1087970129871348, guid: 922b63f130b1bf44a85995243a02ef26, type: 2}
+  m_OfflineScene: OffineScene(will unloaded when play)
+  m_OnlineScene: OnlineScene(will unloaded when play)
+  m_SpawnPrefabs: []
   m_CustomConfig: 0
   m_MaxConnections: 4
   m_ConnectionConfig:
@@ -303,73 +297,46 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &645329941
+--- !u!1 &987462970
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 987462973}
+  - component: {fileID: 987462972}
+  m_Layer: 0
+  m_Name: AutoLoadOnlineOfflineScene
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &987462972
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 645329938}
+  m_GameObject: {fileID: 987462970}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 451166a1ca9b8e446acfb45af4dcb4f7, type: 3}
+  m_Script: {fileID: 11500000, guid: e0ad8df0583e2df428a57f9390a5db9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  networkAddress: localhost
-  networkPort: 7777
-  bootType: 0
-  autoConnect: 1
-  autoConnectInterval: 10
---- !u!114 &645329942
-MonoBehaviour:
+--- !u!4 &987462973
+Transform:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 645329938}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6029163917ed01d4e905ab9d5d59892c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &645329943
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 645329938}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9102b09670c03d04ba5a69c2a2dc41f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &645329944
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 645329938}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2aacaba6694edd41bed42e69aa766d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &645329945
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 645329938}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 148f6fea792e4c94287a9a281f527cc8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _onlineScenes:
-  - {fileID: 102900000, guid: 69d81700c7826b948ad6e0d7f95623c0, type: 3}
-  - {fileID: 102900000, guid: 32e288e16873fec4cb5ec41a0123946f, type: 3}
-  _idx: 1
-  _onlineSceneNames:
-  - PreRendering
-  - InstanceRandom
+  m_GameObject: {fileID: 987462970}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1449568912
 GameObject:
   m_ObjectHideFlags: 0
@@ -433,5 +400,5 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

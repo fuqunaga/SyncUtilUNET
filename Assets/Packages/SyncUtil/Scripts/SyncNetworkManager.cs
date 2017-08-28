@@ -21,7 +21,7 @@ namespace SyncUtil
         {
             EditorApplication.playmodeStateChanged += () =>
             {
-                var startPlay = EditorApplication.isPlaying && EditorApplication.isPlayingOrWillChangePlaymode;
+                var startPlay = !EditorApplication.isPlaying && EditorApplication.isPlayingOrWillChangePlaymode;
                 if (startPlay)
                 {
                     var mgr = FindObjectOfType<NetworkManager>(); // singleton maybe not ready.
@@ -34,7 +34,9 @@ namespace SyncUtil
                     .ToList()
                     .ForEach(scene => 
                     {
-                        SceneManager.UnloadSceneAsync(scene);
+#pragma warning disable CS0618 // 型またはメンバーが古い形式です
+                        SceneManager.UnloadScene(scene);
+#pragma warning restore CS0618 // 型またはメンバーが古い形式です
                     });
                 }
             };
