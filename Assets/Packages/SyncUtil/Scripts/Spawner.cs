@@ -42,8 +42,6 @@ namespace SyncUtil
             .ToList()
             .ForEach(go =>
             {
-                Debug.Log(go.name);
-
                 go.transform.SetParent(transform);
                 SyncNet.Spawn(go);
             });

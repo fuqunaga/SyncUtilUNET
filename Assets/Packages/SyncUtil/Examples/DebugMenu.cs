@@ -15,7 +15,7 @@ namespace SyncUtil
             _preRendering = FindObjectOfType<PreRenderingWithLatencyCheckerSample>();
 
             _laytencyCheckerLine = FindObjectOfType<LatencyCheckerLine>();
-            _laytencyCheckerLine.Datas.ForEach(data => data.enable = true);
+            if ( _laytencyCheckerLine) _laytencyCheckerLine.Datas.ForEach(data => data.enable = true);
 
         }
 

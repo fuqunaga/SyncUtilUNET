@@ -1,11 +1,4 @@
-﻿#if UNITY_EDITOR
-using UnityEditor;
-#endif
-using UnityEngine;
-using UnityEngine.Assertions;
-using UnityEngine.Networking;
-using UnityEngine.SceneManagement;
-using System.Linq;
+﻿using UnityEngine.Networking;
 
 namespace SyncUtil
 {
@@ -13,36 +6,6 @@ namespace SyncUtil
     public class SyncNetworkManager : NetworkManager
     {
         public static new SyncNetworkManager singleton { get { return NetworkManager.singleton as SyncNetworkManager; } }
-
-        #region unload other scenes
-#if UNITY_EDITOR
-        [InitializeOnLoadMethod]
-        static void CheckPlaymodeState()
-        {
-            EditorApplication.playmodeStateChanged += () =>
-            {
-                var startPlay = !EditorApplication.isPlaying && EditorApplication.isPlayingOrWillChangePlaymode;
-                if (startPlay)
-                {
-                    var mgr = FindObjectOfType<NetworkManager>(); // singleton maybe not ready.
-                    Assert.IsNotNull(mgr);
-
-                    Enumerable.Range(0, SceneManager.sceneCount)
-                    .Select(i => SceneManager.GetSceneAt(i))
-                    .Where(s => s != SceneManager.GetActiveScene())
-                    .Where(s => s.isLoaded)
-                    .ToList()
-                    .ForEach(scene => 
-                    {
-#pragma warning disable CS0618 // 型またはメンバーが古い形式です
-                        SceneManager.UnloadScene(scene);
-#pragma warning restore CS0618 // 型またはメンバーが古い形式です
-                    });
-                }
-            };
-        }
-#endif
-        #endregion
 
 
         #region Server side
