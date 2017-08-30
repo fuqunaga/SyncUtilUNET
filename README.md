@@ -1,6 +1,5 @@
 # SyncUtil
-
-Sync Utilities For Cluster Rendering
+Sync Utilities For UNET
 
 
 ## Syncing Parameters
