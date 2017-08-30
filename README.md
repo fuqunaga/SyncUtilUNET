@@ -16,20 +16,16 @@ Sync Utilities For Cluster Rendering
 
 ## Spawner, ServerOrStandAlone
 [![](http://img.youtube.com/vi/_fBlCKlia4A/0.jpg)](https://www.youtube.com/watch?v=_fBlCKlia4A)  
-
 auto regist spawnable prefab  
   
 [![](http://img.youtube.com/vi/2qMK0PuPIHY/0.jpg)](https://www.youtube.com/watch?v=2qMK0PuPIHY)  
-
 Spawner: spawn prefabs  
 ServerOrStandAlone: disable chilren on client  
   
 ## Scene Load Helper
 [![](http://img.youtube.com/vi/RQmx5Dr5_MQ/0.jpg)](https://www.youtube.com/watch?v=RQmx5Dr5_MQ)  
-
 unload online/offline scene on hierarchy when application play  
 
 ## Latency Check, Delay Rendering
 [![](http://img.youtube.com/vi/WXi7Jfautpw/0.jpg)](https://www.youtube.com/watch?v=WXi7Jfautpw)  
-
 dynamic delay rendering according to network latency 
