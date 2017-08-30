@@ -14,19 +14,22 @@ Sync Utilities For Cluster Rendering
 ## Random Per Instance
 [![](http://img.youtube.com/vi/Jml_K5ipCZI/0.jpg)](https://www.youtube.com/watch?v=Jml_K5ipCZI)
 
-
 ## Spawner, ServerOrStandAlone
-auto regist spawnable prefab
-[![](http://img.youtube.com/vi/_fBlCKlia4A/0.jpg)](https://www.youtube.com/watch?v=_fBlCKlia4A)
+[![](http://img.youtube.com/vi/_fBlCKlia4A/0.jpg)](https://www.youtube.com/watch?v=_fBlCKlia4A)  
 
-Spawner: spawn prefabs
-ServerOrStandAlone: disable chilren on client
-[![](http://img.youtube.com/vi/2qMK0PuPIHY/0.jpg)](https://www.youtube.com/watch?v=2qMK0PuPIHY)
+auto regist spawnable prefab  
+  
+[![](http://img.youtube.com/vi/2qMK0PuPIHY/0.jpg)](https://www.youtube.com/watch?v=2qMK0PuPIHY)  
 
+Spawner: spawn prefabs  
+ServerOrStandAlone: disable chilren on client  
+  
 ## Scene Load Helper
-unload online/offline scene on hierarchy when application play
-[![](http://img.youtube.com/vi/RQmx5Dr5_MQ/0.jpg)](https://www.youtube.com/watch?v=RQmx5Dr5_MQ)
+[![](http://img.youtube.com/vi/RQmx5Dr5_MQ/0.jpg)](https://www.youtube.com/watch?v=RQmx5Dr5_MQ)  
+
+unload online/offline scene on hierarchy when application play  
 
 ## Latency Check, Delay Rendering
-dynamic delay rendering according to network latency
-[![](http://img.youtube.com/vi/WXi7Jfautpw/0.jpg)](https://www.youtube.com/watch?v=WXi7Jfautpw)
+[![](http://img.youtube.com/vi/WXi7Jfautpw/0.jpg)](https://www.youtube.com/watch?v=WXi7Jfautpw)  
+
+dynamic delay rendering according to network latency 
