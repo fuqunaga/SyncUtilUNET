@@ -32,6 +32,10 @@ dynamic delay rendering according to network latency
 
 
 
+# Recommend
+https://github.com/nobnak/SyncTransform  
+https://github.com/fuqunaga/PrefsGUI/blob/master/README.md#syncoverunet
+
 # Reference
 PreRendering
 https://github.com/nobnak/Gist/blob/master/PreRendering.cs
