@@ -72,12 +72,57 @@ namespace SyncUtil
             return rect;
         }
 
+        static object FieldFuncVector<T>(object v, ref string unparsedStr, params GUILayoutOption[] options)
+        {
+            var elementNum = AbstractVector.GetElementNum<T>();
+            var strs = SplitUnparsedStr(unparsedStr, elementNum);
+            for (var i = 0; i < elementNum; ++i)
+            {
+                var elem = Field(AbstractVector.GetAtIdx<T>(v, i), ref strs[i], "", options);
+                v = AbstractVector.SetAtIdx<T>(v, i, elem);
+            }
+            unparsedStr = JoinUnparsedStr(strs);
+            return v;
+        }
 
         static readonly Dictionary<Type, FieldFunc> _typeFuncTable = new Dictionary<Type, FieldFunc>()
     {
         {typeof(bool),  FieldFuncBool },
         {typeof(Rect), FieldFuncRect },
+        {typeof(Vector2), FieldFuncVector<Vector2> },
+        {typeof(Vector3), FieldFuncVector<Vector3> },
+        {typeof(Vector4), FieldFuncVector<Vector4> },
     };
+
+        class ForcusChecker
+        {
+            int time;
+            int mouseId;
+            int keyboardId;
+            bool changed;
+
+            public bool IsChanged()
+            {
+                if (time != Time.frameCount)
+                {
+                    time = Time.frameCount;
+
+                    var currentMouse = GUIUtility.hotControl;
+                    var currentKeyboard = GUIUtility.keyboardControl;
+
+                    changed = (keyboardId != currentKeyboard) || (mouseId != currentMouse);
+                    if (changed)
+                    {
+                        keyboardId = currentKeyboard;
+                        mouseId = currentMouse;
+                    }
+                }
+
+                return changed;
+            }
+        }
+
+        static ForcusChecker _forcusChecker = new ForcusChecker();
 
         static object StandardField<T>(T v, ref string unparsedStr, params GUILayoutOption[] options)
         {
@@ -85,15 +130,11 @@ namespace SyncUtil
 
             var type = typeof(T);
 
-            // TODO:
-            // フォーカスが外れたときにバリデーションしたい（unparsedStr=nullにすることでv.ToString()に更新される）
-            // うまい実装がわからないので簡易的にタブ時に行う
-            // マウスイベントも対応したいがこれより前のGUIでイベント食われたとき対応できないので一旦無しで
-            if (Event.current.keyCode == KeyCode.Tab)
+            // validate when unfocused (unparsedStr=null then v.ToString will to be set)）
+            if (_forcusChecker.IsChanged())
             {
                 unparsedStr = null;
             }
-
 
             var hasUnparsedStr = !string.IsNullOrEmpty(unparsedStr);
             var canParse = false;
@@ -227,11 +268,42 @@ namespace SyncUtil
             return v;
         }
 
+
+        static readonly string[] defaultElemLabelsVector = new[] { "x", "y", "z", "w" };
+        static object SliderFuncVector<T>(object v, object min, object max, ref string unparsedStr, string label = "", string[] elemLabels = null)
+        {
+            var elementNum = AbstractVector.GetElementNum<T>();
+            var eLabels = elemLabels ?? defaultElemLabelsVector;
+
+            using (var h0 = new GUILayout.HorizontalScope())
+            {
+                if (!string.IsNullOrEmpty(label)) GUILayout.Label(label);
+                using (var vertical = new GUILayout.VerticalScope())
+                {
+                    var strs = SplitUnparsedStr(unparsedStr, elementNum);
+                    for (var i = 0; i < elementNum; ++i)
+                    {
+                        using (var h1 = new GUILayout.HorizontalScope())
+                        {
+                            var elem = Slider(AbstractVector.GetAtIdx<T>(v, i), AbstractVector.GetAtIdx<T>(min, i), AbstractVector.GetAtIdx<T>(max, i), ref strs[i], eLabels[i]);
+                            v = AbstractVector.SetAtIdx<T>(v, i, elem);
+                        }
+                    }
+                    unparsedStr = JoinUnparsedStr(strs);
+                }
+            }
+
+            return v;
+        }
+
         static readonly Dictionary<Type, SliderFunc> _typeSliderFuncTable = new Dictionary<Type, SliderFunc>()
     {
         {typeof(int), SliderInt },
         {typeof(float), SliderFloat },
         {typeof(Rect), SliderFuncRect },
+        {typeof(Vector2), SliderFuncVector<Vector2> },
+        {typeof(Vector3), SliderFuncVector<Vector3> },
+        {typeof(Vector4), SliderFuncVector<Vector4> },
     };
 
         #endregion
@@ -280,5 +352,4 @@ namespace SyncUtil
             }
         }
     }
-
 }

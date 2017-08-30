@@ -1,31 +1,21 @@
 ﻿using UnityEngine;
-using SyncUtil;
-using System.Collections.Generic;
-using UnityEngine.Networking;
 using System.Linq;
 
-public class ServerOrStandAlone : MonoBehaviour
+namespace SyncUtil
 {
-    public List<GameObject> _spawnPrefabs;
-
-    public void Awake()
+    /// <summary>
+    /// Client
+    ///  childrens will be deactivated
+    /// </summary>
+    public class ServerOrStandAlone : MonoBehaviour
     {
-        var active = SyncNet.isServerOrStandAlone;
-
-        Enumerable.Range(0, transform.childCount)
-            .Select(idx => transform.GetChild(idx)).ToList()
-            .ForEach(child => child.gameObject.SetActive(active));
-
-
-        if (active)
+        public void Awake()
         {
-            _spawnPrefabs.ForEach(p =>
-            {
-                var go = Instantiate(p);
-                go.transform.SetParent(transform);
+            var active = SyncNet.isServerOrStandAlone;
 
-                NetworkServer.Spawn(go);
-            });
+            Enumerable.Range(0, transform.childCount)
+                .Select(idx => transform.GetChild(idx)).ToList()
+                .ForEach(child => child.gameObject.SetActive(active));
         }
     }
 }

@@ -28,3 +28,12 @@ EditorBuildSettings:
     path: Assets/Packages/SyncUtil/Examples/UnloadOnlineOfflineScenes/OffineScene(will
       unloaded when play).unity
     guid: c00ed5af217635c4e968fa1eff1c0296
+  - enabled: 1
+    path: Assets/Packages/SyncUtil/Examples/Spawner,ServerOrStandAlone/Spawner,ServerOrStandAlone.unity
+    guid: 2d6f7bda8f5661545bd19ad02e978a1e
+  - enabled: 1
+    path: Assets/Packages/SyncUtil/Examples/SyncBehaviourEnable,SyncGameObjectActive/SyncBehaviourEnable,SyncGameObjectActive.unity
+    guid: bb61093fc25965247973d8306acc5f7b
+  - enabled: 1
+    path: Assets/Packages/SyncUtil/Examples/SyncParam/SyncParam.unity
+    guid: e6b021ddd1437804d884f68c8f1ff0f6

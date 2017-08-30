@@ -29,8 +29,13 @@ namespace SyncUtil
         public virtual float _autoConnectInterval { get; } = 10f;
 
 
+        NetworkManager _networkManager;
+
+
         public virtual void Start()
         {
+            _networkManager = GetComponent<NetworkManager>();
+
             UpdateManager();
 
             if (_bootType != BootType.Manual) StartNetwork(_bootType);
@@ -42,7 +47,7 @@ namespace SyncUtil
             StopAllCoroutines();
 
             IEnumerator routine = null;
-            var mgr = NetworkManager.singleton;
+            var mgr = _networkManager;
             switch (bootType)
             {
                 case BootType.Host: routine = StartConnectLoop(() => mgr.client != null, () => mgr.StartHost()); break;
@@ -70,8 +75,7 @@ namespace SyncUtil
 
         public virtual void OnGUI()
         {
-            var mgr = NetworkManager.singleton;
-            if (mgr != null && !mgr.isNetworkActive)
+            if (_networkManager != null && !_networkManager.isNetworkActive)
             {
                 GUILayout.Label("SyncUtil Manual Boot");
 
@@ -79,8 +83,7 @@ namespace SyncUtil
                 {
                     OnGUINetworkSetting();
 
-                    /*
-                    var mgr = NetworkManager.singleton;
+                    var mgr = _networkManager;
                     mgr.useSimulator = GUILayout.Toggle(mgr.useSimulator, "UseSimulator");
                     if (mgr.useSimulator)
                     {
@@ -90,7 +93,6 @@ namespace SyncUtil
                             mgr.packetLossPercentage = GUIUtil.Slider(mgr.packetLossPercentage, 0f, 20f, "PacketLoss[%]");
                         });
                     }
-                    */
 
                     if (GUILayout.Button("Host")) { OnNetworkStartByManual(); StartNetwork(BootType.Host); }
                     if (GUILayout.Button("Client")) { OnNetworkStartByManual(); StartNetwork(BootType.Client); }
@@ -106,9 +108,8 @@ namespace SyncUtil
 
         protected void UpdateManager()
         {
-            var mgr = NetworkManager.singleton;
-            mgr.networkAddress = _networkAddress;
-            mgr.networkPort = _networkPort;
+            _networkManager.networkAddress = _networkAddress;
+            _networkManager.networkPort = _networkPort;
         }
 
         GUIUtil.Fold _fold;

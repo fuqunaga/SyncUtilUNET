@@ -50,6 +50,10 @@ namespace SyncUtil
             .ToList()
             .ForEach(scene =>
             {
+                if ( scene.isDirty )
+                {
+                    EditorSceneManager.SaveScene(scene);
+                }
                 SceneManager.UnloadSceneAsync(scene);
             });
         }

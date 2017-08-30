@@ -15,7 +15,7 @@ namespace SyncUtil
         }
     }
 
-
+    [ExecuteInEditMode]
     public abstract class SyncObjectBool<T> : SyncObjectBool
         where T : Object
     {
@@ -28,7 +28,17 @@ namespace SyncUtil
         void Update()
         {
             var mgr = SyncParamManager.instance;
-            if (mgr != null)
+#if UNITY_EDITOR
+            if (!Application.isPlaying)
+            {
+                if (mgr == null)
+                {
+                    Debug.LogWarning("SyncParamManager is NOT found.");
+
+                }
+            }
+#endif
+            if(mgr != null)
             {
                 if (SyncNet.isServer)
                 {
@@ -51,8 +61,8 @@ namespace SyncUtil
     {
         public enum Mode
         {
-            Sync,
-            Trigger
+            Sync,   // call Set() every frame
+            Trigger // call Set() only when new value recieved 
         }
 
         public Mode _mode;

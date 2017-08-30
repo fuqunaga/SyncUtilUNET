@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -52,7 +51,7 @@ namespace SyncUtil
 
         #region singleton
         static SyncParamManager _instance;
-        public static SyncParamManager instance { get { return _instance ?? (_instance = FindObjectOfType<SyncParamManager>()); } }
+        public static SyncParamManager instance { get { return (_instance != null) ? _instance : (_instance = FindObjectOfType<SyncParamManager>()); } }
         #endregion
 
         #region sync

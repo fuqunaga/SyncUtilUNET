@@ -2,7 +2,7 @@
 
 namespace SyncUtil
 {
-    [RequireComponent(typeof(SceneSelector))]
+    [RequireComponent(typeof(SceneSelectorForExample))]
     public class NetworkManagerControllerSample : NetworkManagerController
     {
         public string networkAddress = "localhost";
@@ -17,25 +17,26 @@ namespace SyncUtil
         public override bool _autoConnect { get { return autoConnect; } }
         public override float _autoConnectInterval { get { return autoConnectInterval; } }
 
-        SceneSelector _sceneSelector;
+        SceneSelectorForExample _sceneSelector;
 
         public override void Start()
         {
             base.Start();
-            _sceneSelector = GetComponent<SceneSelector>();
+            _sceneSelector = GetComponent<SceneSelectorForExample>();
         }
 
         protected override void OnGUINetworkSetting()
         {
             _sceneSelector.DebugMenu();
+
+            networkAddress = GUIUtil.Field(networkAddress, "Host Address");
+            networkPort = GUIUtil.Field(networkPort, "Host Port");
+            
             DebugMenuInternal();
         }
 
         protected override void DebugMenuInternal()
         {
-            networkAddress = GUIUtil.Field(networkAddress, "Host Address");
-            networkPort = GUIUtil.Field(networkPort, "Host Port");
-            bootType = GUIUtil.Field(bootType, "Boot Type");
             autoConnect = GUIUtil.Field(autoConnect, "AutoConnect");
             autoConnectInterval = GUIUtil.Field(autoConnectInterval, "AutoConnectInterval");
         }
