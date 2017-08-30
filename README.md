@@ -29,3 +29,9 @@ unload online/offline scene on hierarchy when application play
 ## Latency Check, Delay Rendering
 [![](http://img.youtube.com/vi/WXi7Jfautpw/0.jpg)](https://www.youtube.com/watch?v=WXi7Jfautpw)  
 dynamic delay rendering according to network latency 
+
+
+
+# Reference
+PreRendering
+https://github.com/nobnak/Gist/blob/master/PreRendering.cs
