@@ -367,18 +367,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _onlineScenes:
-  - {fileID: 102900000, guid: 69d81700c7826b948ad6e0d7f95623c0, type: 3}
-  - {fileID: 102900000, guid: 32e288e16873fec4cb5ec41a0123946f, type: 3}
-  - {fileID: 102900000, guid: 2d6f7bda8f5661545bd19ad02e978a1e, type: 3}
-  - {fileID: 102900000, guid: bb61093fc25965247973d8306acc5f7b, type: 3}
   - {fileID: 102900000, guid: e6b021ddd1437804d884f68c8f1ff0f6, type: 3}
-  _idx: 4
+  - {fileID: 102900000, guid: bb61093fc25965247973d8306acc5f7b, type: 3}
+  - {fileID: 102900000, guid: 2d6f7bda8f5661545bd19ad02e978a1e, type: 3}
+  - {fileID: 102900000, guid: 32e288e16873fec4cb5ec41a0123946f, type: 3}
+  - {fileID: 102900000, guid: 69d81700c7826b948ad6e0d7f95623c0, type: 3}
+  _idx: 0
   _onlineSceneNames:
-  - PreRendering
-  - InstanceRandom
-  - Spawner,ServerOrStandAlone
-  - SyncBehaviourEnable,SyncGameObjectActive
   - SyncParam
+  - SyncBehaviourEnable,SyncGameObjectActive
+  - Spawner,ServerOrStandAlone
+  - InstanceRandom
+  - PreRendering
 --- !u!1 &1406493531
 GameObject:
   m_ObjectHideFlags: 0

@@ -21,13 +21,20 @@ namespace SyncUtil
             DebugMenuForExample.Instance.onGUI -= DebugMenu;
         }
 
-        // Use this for initialization
         void Start()
         {
             _preRendering = FindObjectOfType<PreRenderingWithLatencyCheckerSample>();
 
             _laytencyCheckerLine = FindObjectOfType<LatencyCheckerLine>();
-            if (_laytencyCheckerLine) _laytencyCheckerLine.Datas.ForEach(data => data.enable = true);
+            StartCoroutine(SetLaytencyCheckerLineEnable());
+        }
+
+
+        IEnumerator SetLaytencyCheckerLineEnable()
+        {
+            yield return new WaitForEndOfFrame();
+            _laytencyCheckerLine.Datas.ForEach(data => data.enable = true);
+
         }
 
         // Update is called once per frame
