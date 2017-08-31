@@ -1,6 +1,6 @@
 # SyncUtil
-Sync Utilities For UNET
-
+Sync Utilities For UNET  
+[Unity Package](https://github.com/fuqunaga/SyncUtil/raw/master/SyncUtil.unitypackage)
 
 ## Syncing Parameters
 
