@@ -1,5 +1,9 @@
 # SyncUtil
 Sync Utilities For UNET  
+  
+Use .NET 4.6  
+File -> Build Setting -> Player Settings...  
+Scripting Runtime Version: Experimental(.NET 4.6 Equivalent)  
 [Unity Package](https://github.com/fuqunaga/SyncUtil/raw/master/SyncUtil.unitypackage)
 
 ## Syncing Parameters
