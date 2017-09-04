@@ -235,8 +235,7 @@ MonoBehaviour:
   m_OnlineScene: SyncParam
   m_SpawnPrefabs:
   - {fileID: 1087970129871348, guid: 922b63f130b1bf44a85995243a02ef26, type: 2}
-  - {fileID: 1506407616398718, guid: fb059f27c16c79545a74652269b3d2ff, type: 2}
-  m_CustomConfig: 0
+  m_CustomConfig: 1
   m_MaxConnections: 4
   m_ConnectionConfig:
     m_PacketSize: 1440
@@ -278,7 +277,7 @@ MonoBehaviour:
     m_MaxTimerTimeout: 12000
     m_MinNetSimulatorTimeout: 1
     m_MaxNetSimulatorTimeout: 12000
-  m_Channels: 
+  m_Channels: 0500000000000000
   m_UseWebSockets: 0
   m_UseSimulator: 0
   m_SimulatedLatency: 1
@@ -320,7 +319,7 @@ MonoBehaviour:
   networkAddress: localhost
   networkPort: 7777
   bootType: 0
-  autoConnect: 1
+  autoConnect: 0
   autoConnectInterval: 10
 --- !u!114 &645329942
 MonoBehaviour:
@@ -586,7 +585,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _autoUnloadOnline: 1
   _autoUnloadOffline: 1
-  _autoLoadOnline: 1
+  _autoLoadOnline: 0
   _autoLoadOffline: 0
 --- !u!4 &1884591838
 Transform:

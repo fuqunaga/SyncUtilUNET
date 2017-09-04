@@ -339,7 +339,7 @@ MonoBehaviour:
   _target: {fileID: 1250200201}
   _fields:
   - name: _bool
-    mode: 0
+    mode: 1
   - name: _int
     mode: 0
   - name: _uint

@@ -14,9 +14,10 @@ namespace SyncUtil
 #if UNITY_EDITOR
         public List<SceneAsset> _onlineScenes = new List<SceneAsset>();
 
-        private void Update()
+        private void OnValidate()
         {
-            _onlineSceneNames = _onlineScenes.Where(s => s != null).Select(s => s.name).ToArray(); ;
+            _onlineSceneNames = _onlineScenes.Where(s => s != null).Select(s => s.name).ToArray();
+            UpdateOnlineScene();
         }
 #endif
 
@@ -30,10 +31,7 @@ namespace SyncUtil
             UpdateOnlineScene();
         }
 
-        private void OnValidate()
-        {
-            UpdateOnlineScene();
-        }
+
 
         public void DebugMenu()
         {
@@ -52,8 +50,11 @@ namespace SyncUtil
 
         void UpdateOnlineScene()
         {
-            var nm = FindObjectOfType<NetworkManager>();
-            nm.onlineScene = _onlineSceneNames[_idx];
+            if (_onlineSceneNames != null && _onlineSceneNames.Any())
+            {
+                var nm = FindObjectOfType<NetworkManager>();
+                nm.onlineScene = _onlineSceneNames[Mathf.Min(_onlineSceneNames.Length - 1, _idx)];
+            }
         }
     }
 }
