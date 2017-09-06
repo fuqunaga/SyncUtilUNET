@@ -31,15 +31,10 @@ namespace SyncUtil
             EditorApplication.playmodeStateChanged += PlayModeStateChanged;
         }
 
-        private void OnDestroy()
-        {
-            EditorApplication.playmodeStateChanged -= PlayModeStateChanged;
-        }
-
         static void PlayModeStateChanged()
         {
             var startPlay = !EditorApplication.isPlaying && EditorApplication.isPlayingOrWillChangePlaymode;
-            if (startPlay)
+            if (startPlay && (Instance != null))
             {
                 Instance.UnloadScenes();
             }
