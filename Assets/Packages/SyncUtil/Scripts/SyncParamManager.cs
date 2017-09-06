@@ -123,12 +123,15 @@ namespace SyncUtil
                 iSynList.Set(ti.idx, val);
             }
             else {
-                Assert.IsTrue(_typeToSyncList.ContainsKey(type), string.Format("type [{0}] is not supported.", type));
+                if (_typeToSyncList != null)
+                {
+                    Assert.IsTrue(_typeToSyncList.ContainsKey(type), string.Format("type [{0}] is not supported.", type));
 
-                var iSynList = _typeToSyncList[type];
-                var idx = iSynList.Count;
-                iSynList.Add(key, val);
-                _keyToTypeIdx[key] = new TypeAndIdx() { type = type, idx = idx };
+                    var iSynList = _typeToSyncList[type];
+                    var idx = iSynList.Count;
+                    iSynList.Add(key, val);
+                    _keyToTypeIdx[key] = new TypeAndIdx() { type = type, idx = idx };
+                }
             }
         }
 
