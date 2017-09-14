@@ -18,16 +18,37 @@ namespace SyncUtil
 
         public CustomRandom(System.Func<float> randFunc) { _randFunc = randFunc; }
 
-        public float value { get { return _randFunc(); } }
 
-        public int RandInt()
+        #region UnityEndgine.Random like
+
+        public Quaternion rotation => Quaternion.Euler(value*360f, value*360f, value*360f);
+
+        public Vector3 onUnitSphere
         {
-            return Mathf.FloorToInt(value * int.MaxValue);
+            get
+            {
+                Vector3 ret;
+                do
+                {
+                    ret = (new Vector3(value, value, value) - Vector3.one * 0.5f).normalized;
+                } while (ret.sqrMagnitude == 0f);
+                return ret;
+            }
         }
 
-        public float Range(float min, float max) { return Mathf.Lerp(min, max, value); }
+        public Vector2 insideUnitCircle
+        {
+            get
+            {
+                Vector2 ret;
+                do
+                {
+                    ret = (new Vector2(value, value) - Vector2.one * 0.5f) * 2f;
+                } while (ret.sqrMagnitude > 1f);
 
-        public int Range(int min, int max) { return Mathf.FloorToInt((max - min) * value * (1f - float.Epsilon)) + min; }
+                return ret;
+            }
+        }
 
         public Vector3 insideUnitSphere
         {
@@ -43,17 +64,22 @@ namespace SyncUtil
             }
         }
 
-        public Vector3 onUnitSphere
+        public float value { get { return _randFunc(); } }
+
+        public float Range(float min, float max) { return Mathf.Lerp(min, max, value); }
+
+        public int Range(int min, int max) { return Mathf.FloorToInt((max - min) * value * (1f - float.Epsilon)) + min; }
+
+        #endregion
+
+
+        #region Extra Methods
+        public int RandInt()
         {
-            get
-            {
-                Vector3 ret;
-                do
-                {
-                    ret = (new Vector3(value, value, value) - Vector3.one * 0.5f).normalized;
-                } while (ret.sqrMagnitude == 0f);
-                return ret;
-            }
+            return Mathf.FloorToInt(value * int.MaxValue);
         }
+
+
+        #endregion
     }
 }

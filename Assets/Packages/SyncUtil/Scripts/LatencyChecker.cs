@@ -114,7 +114,7 @@ namespace SyncUtil
 #if INCLUDE_UPDATE
             if (SyncNet.isSlaver)
             {
-                if (_lastMsg != null)
+                if (_lastMsg != null && SyncNet.client.isConnected)
                 {
                     SyncNet.client.Send(CustomMsgType.Latency, _lastMsg);
                     _lastMsg = null;

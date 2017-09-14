@@ -37,3 +37,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Packages/SyncUtil/Examples/SyncParam/SyncParam.unity
     guid: e6b021ddd1437804d884f68c8f1ff0f6
+  - enabled: 1
+    path: Assets/Packages/SyncUtil/Examples/LockStep/LockStep.unity
+    guid: 5d7c27864394aa34cb6800d4165785f7

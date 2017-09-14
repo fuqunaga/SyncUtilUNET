@@ -156,20 +156,6 @@ Light:
   m_Lightmapping: 4
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
-  m_FalloffTable:
-    m_Table[0]: 0
-    m_Table[1]: 0
-    m_Table[2]: 0
-    m_Table[3]: 0
-    m_Table[4]: 0
-    m_Table[5]: 0
-    m_Table[6]: 0
-    m_Table[7]: 0
-    m_Table[8]: 0
-    m_Table[9]: 0
-    m_Table[10]: 0
-    m_Table[11]: 0
-    m_Table[12]: 0
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
@@ -232,9 +218,10 @@ MonoBehaviour:
   m_AutoCreatePlayer: 0
   m_PlayerSpawnMethod: 0
   m_OfflineScene: Offline
-  m_OnlineScene: SyncParam
+  m_OnlineScene: LockStep
   m_SpawnPrefabs:
   - {fileID: 1087970129871348, guid: 922b63f130b1bf44a85995243a02ef26, type: 2}
+  - {fileID: 1552606861858982, guid: 6349d1f70247b7d41b31016a5bc310c1, type: 2}
   m_CustomConfig: 1
   m_MaxConnections: 4
   m_ConnectionConfig:
@@ -371,13 +358,15 @@ MonoBehaviour:
   - {fileID: 102900000, guid: 2d6f7bda8f5661545bd19ad02e978a1e, type: 3}
   - {fileID: 102900000, guid: 32e288e16873fec4cb5ec41a0123946f, type: 3}
   - {fileID: 102900000, guid: 69d81700c7826b948ad6e0d7f95623c0, type: 3}
-  _idx: 0
+  - {fileID: 102900000, guid: 5d7c27864394aa34cb6800d4165785f7, type: 3}
+  _idx: 5
   _onlineSceneNames:
   - SyncParam
   - SyncBehaviourEnable,SyncGameObjectActive
   - Spawner,ServerOrStandAlone
   - InstanceRandom
   - PreRendering
+  - LockStep
 --- !u!1 &1406493531
 GameObject:
   m_ObjectHideFlags: 0

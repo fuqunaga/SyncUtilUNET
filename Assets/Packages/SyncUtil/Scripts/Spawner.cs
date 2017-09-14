@@ -12,6 +12,7 @@ namespace SyncUtil
         public List<NetworkIdentity> _prefabs = new List<NetworkIdentity>();
 
 #if UNITY_EDITOR
+        // Auto Regist to SpawnPrefabs on Editor
         NetworkManager _networkManager;
         private void Update()
         {
@@ -34,7 +35,6 @@ namespace SyncUtil
 
         IEnumerator DelaySpawn()
         {
-            // _OnStartServer() 呼び出し時はまだNetworkServer.activeではないことがある
             yield return new WaitUntil(() => NetworkServer.active);
 
             _prefabs
