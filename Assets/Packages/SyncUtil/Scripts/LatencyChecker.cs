@@ -74,16 +74,16 @@ namespace SyncUtil
                 _conectionLatencyTable.Remove(conn.connectionId);
             };
 
-            SyncNetworkManager.singleton._OnStartClient += () =>
+            SyncNetworkManager.singleton._OnStartClient += (client) =>
             {
                 if (SyncNet.isSlaver)
                 {
-                    SyncNet.client.RegisterHandler(CustomMsgType.Latency, (msg) =>
+                    client.RegisterHandler(CustomMsgType.Latency, (msg) =>
                     {
 #if INCLUDE_UPDATE
                         _lastMsg = msg.ReadMessage<LatencyMessage>();
 #else
-                        SyncNet.client.Send(CustomMsgType.Latency, msg.ReadMessage<LatencyMessage>());
+                        client.Send(CustomMsgType.Latency, msg.ReadMessage<LatencyMessage>());
 #endif
                     });
 

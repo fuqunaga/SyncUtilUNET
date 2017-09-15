@@ -30,11 +30,11 @@ namespace SyncUtil
 
         public void Start()
         {
-            SyncNetworkManager.singleton._OnStartClient += () =>
+            SyncNetworkManager.singleton._OnStartClient += (client) =>
             {
                 if (SyncNet.isSlaver)
                 {
-                    SyncNet.client.RegisterHandler(CustomMsgType.Time, (netMsg) =>
+                    client.RegisterHandler(CustomMsgType.Time, (netMsg) =>
                     {
                         var msg = netMsg.ReadMessage<SyncTimeMessage>();
                         if (_lastMsg == null || msg.time > _lastMsg.time)

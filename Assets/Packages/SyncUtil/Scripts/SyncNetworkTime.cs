@@ -30,11 +30,11 @@ public class SyncNetworkTime : MonoBehaviour
         };
 
 
-        networkManager._OnStartClient += () =>
+        networkManager._OnStartClient += (client) =>
         {
             if (SyncNet.isSlaver)
             {
-                SyncNet.client.RegisterHandler(CustomMsgType.NetworkTime, (msg) =>
+                client.RegisterHandler(CustomMsgType.NetworkTime, (msg) =>
                 {
                     _offset = msg.ReadMessage<NetworkTimeMessage>().time - Network.time;
                 });

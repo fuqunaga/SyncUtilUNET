@@ -13,7 +13,7 @@ namespace SyncUtil
 
         GameObject _sphere;
         Vector3 velocity;
-        public float damping = 0.999f;
+        public float damping = 0.9f;
         public float forceMax = 0.1f;
 
         private void Start()

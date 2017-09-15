@@ -36,11 +36,11 @@ namespace SyncUtil
 
         #region Client side
 
-        public event System.Action _OnStartClient = delegate { };
+        public event System.Action<NetworkClient> _OnStartClient = delegate { };
         public override void OnStartClient(NetworkClient client)
         {
             base.OnStartClient(client);
-            _OnStartClient();
+            _OnStartClient(client);
         }
 
         public event System.Action<NetworkConnection> _OnClientConnect = delegate { };

@@ -8,8 +8,6 @@ using UnityEngine.Networking;
 
 namespace SyncUtil
 {
-    [RequireComponent(typeof(NetworkManager))]
-    [RequireComponent(typeof(LatencyChecker), typeof(SyncTime), typeof(SyncNetworkTime))]
     public class NetworkManagerController : MonoBehaviour
     {
         #region TypeDefine

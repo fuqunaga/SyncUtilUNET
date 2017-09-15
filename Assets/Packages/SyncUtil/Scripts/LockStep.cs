@@ -5,6 +5,7 @@ using UnityEngine.Networking;
 
 namespace SyncUtil
 {
+    [NetworkSettings(sendInterval = 0f)]
     public class LockStep : NetworkBehaviour
     {
         public Func<MessageBase> getDataFunc;
