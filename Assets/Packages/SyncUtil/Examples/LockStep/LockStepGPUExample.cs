@@ -1,25 +1,23 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
 
-namespace SyncUtil
+namespace SyncUtil.Example
 {
-    [RequireComponent(typeof(LockStep))]
-    public class LockStepExample : MonoBehaviour
+    [RequireComponent(typeof(LockStep), typeof(GPUFluid), typeof(GPUFluidMouse))]
+    public class LockStepGPUExample : MonoBehaviour
     {
         public class Msg : MessageBase
         {
-            public Vector3 force;
+            public GPUFluid.StepData data;
         }
 
-        GameObject _sphere;
-        Vector3 velocity;
-        public float damping = 0.9f;
-        public float forceMax = 0.1f;
+        GPUFluid _fluid;
+        GPUFluidMouse _mouse;
 
         private void Start()
         {
-            _sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            _sphere.transform.SetParent(transform);
+            _fluid = GetComponent<GPUFluid>();
+            _mouse = GetComponent<GPUFluidMouse>();
 
             IniteLockStepCallbacks();
         }
@@ -31,14 +29,14 @@ namespace SyncUtil
             {
                 return new Msg()
                 {
-                    force = Random.insideUnitSphere * forceMax
+                    data = GPUFluidUpdator.CreateStepData(_mouse)
                 };
             };
 
             lockStep.stepFunc += (stepCount, reader) =>
             {
                 var msg = reader.ReadMessage<Msg>();
-                Step(msg.force);
+                Step(msg.data);
             };
 
             lockStep.onMissingCatchUpServer += () =>
@@ -50,12 +48,9 @@ namespace SyncUtil
         }
 
 
-        void Step(Vector3 force)
+        void Step(GPUFluid.StepData data)
         {
-            velocity += force;
-            velocity *= damping;
-            var trans = _sphere.transform;
-            trans.position = trans.position + velocity;
+            _fluid.Step(data);
         }
     }
 }

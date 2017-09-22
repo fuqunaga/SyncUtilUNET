@@ -1,0 +1,190 @@
+﻿#pragma kernel AdvectFloat2
+#pragma kernel AdvectFloat4
+#pragma kernel DiffuseFloat2
+#pragma kernel DiffuseFloat4
+#pragma kernel AddForce
+#pragma kernel ComputeDivergence
+#pragma kernel SolvePressure
+#pragma kernel PressureGradientSubtract
+
+#define NUM_THREAD_X 32 
+#define NUM_THREAD_Y 32 
+#define NUM_THREAD_Z 1
+
+
+float _DeltaTime;
+RWTexture2D<float2> _Velocity;
+Texture2D<float2> _VelocityRead;
+float _VelocityToUV;
+
+////////////////////////////////////////////////////////////////////////////////
+// Advect
+////////////////////////////////////////////////////////////////////////////////
+SamplerState SmpLinearClamp;
+
+#define ADVECT(name, write, read) \
+void name(uint2 id : SV_DispatchThreadID)\
+{\
+    uint w, h;\
+    write.GetDimensions(w, h);\
+\
+    if (id.x < w && id.y < h)\
+    {\
+		uint2 pos = id.xy;\
+        float2 trace_pos = (float2)pos - _DeltaTime * _VelocityToUV * _VelocityRead[pos];\
+        write[pos] = read.SampleLevel(SmpLinearClamp, (trace_pos+0.5) / float2(w,h), 0);\
+    }\
+}\
+
+RWTexture2D<float2> _AdvectFloat2Write;
+Texture2D<float2> _AdvectFloat2Read;
+
+[numthreads(NUM_THREAD_X, NUM_THREAD_Y, NUM_THREAD_Z)]
+ADVECT(AdvectFloat2, _AdvectFloat2Write, _AdvectFloat2Read)
+
+
+RWTexture2D<float4> _AdvectFloat4Write;
+Texture2D<float4> _AdvectFloat4Read;
+
+[numthreads(NUM_THREAD_X, NUM_THREAD_Y, NUM_THREAD_Z)]
+ADVECT(AdvectFloat4, _AdvectFloat4Write, _AdvectFloat4Read)
+
+////////////////////////////////////////////////////////////////////////////////
+//  Diffuse
+////////////////////////////////////////////////////////////////////////////////
+float _Viscocity;
+
+#define DIFFUSE(name, write, read) \
+void name(uint3 id : SV_DispatchThreadID) \
+{ \
+    uint w, h; \
+    write.GetDimensions(w, h); \
+ \
+    if (id.x < w && id.y < h) \
+	{ \
+        float a = _Viscocity; \
+		uint2 pos = id.xy; \
+		write[pos] = ( \
+				(a * read[pos])  \
+				+ read[pos + int2(1, 0)] \
+				+ read[pos - int2(1, 0)] \
+				+ read[pos + int2(0, 1)] \
+				+ read[pos - int2(0, 1)] \
+			) / (4 + a); \
+    } \
+} \
+
+RWTexture2D<float2> _DiffuseFloat2Write;
+Texture2D<float2> _DiffuseFloat2Read;
+
+[numthreads(NUM_THREAD_X, NUM_THREAD_Y, NUM_THREAD_Z)]
+DIFFUSE(DiffuseFloat2, _DiffuseFloat2Write, _DiffuseFloat2Read)
+
+RWTexture2D<float4> _DiffuseFloat4Write;
+Texture2D<float4> _DiffuseFloat4Read;
+
+[numthreads(NUM_THREAD_X, NUM_THREAD_Y, NUM_THREAD_Z)]
+DIFFUSE(DiffuseFloat4, _DiffuseFloat4Write, _DiffuseFloat4Read)
+
+////////////////////////////////////////////////////////////////////////////////
+// AddForce
+////////////////////////////////////////////////////////////////////////////////
+RWTexture2D<float4> _Color;
+
+float2 _AddForceVelocity;
+float4 _AddColor;
+float2 _AddPos;
+float _AddRadius;
+
+[numthreads(NUM_THREAD_X, NUM_THREAD_Y, NUM_THREAD_Z)]
+void AddForce(uint3 id : SV_DispatchThreadID)
+{
+    uint w, h;
+    _Velocity.GetDimensions(w, h);
+
+    if (id.x < w && id.y < h)
+	{
+		uint2 pos = id.xy;
+		float dist =  distance(((float2)pos/float2(w,h)), _AddPos);
+		if ( dist < _AddRadius)
+		{
+			float rate = smoothstep(0, 1, (_AddRadius - dist) / _AddRadius);
+			_Velocity[pos] += _AddForceVelocity * rate;
+			_Color[pos] = _AddColor;
+		}
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+//  ComputeDivergence
+////////////////////////////////////////////////////////////////////////////////
+RWTexture2D<float> _Divergence;
+
+[numthreads(NUM_THREAD_X, NUM_THREAD_Y, NUM_THREAD_Z)]
+void ComputeDivergence(uint2 id : SV_DispatchThreadID)
+{
+    uint w, h;
+    _Divergence.GetDimensions(w, h);
+
+    if (id.x < w && id.y < h)
+    {
+		uint2 pos = id.xy;
+        float2 wL = _VelocityRead[pos - int2(1,0)];
+        float2 wR = _VelocityRead[pos + int2(1,0)];
+        float2 wB = _VelocityRead[pos - int2(0,1)];
+        float2 wT = _VelocityRead[pos + int2(0,1)];
+       
+        _Divergence[pos] = 0.5 * _VelocityToUV * ((wR.x - wL.x) + (wT.y - wB.y));
+	}
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+//  ComputeDivergence
+////////////////////////////////////////////////////////////////////////////////
+RWTexture2D<float> _Pressure;
+Texture2D<float> _PressureRead;
+
+[numthreads(NUM_THREAD_X, NUM_THREAD_Y, NUM_THREAD_Z)]
+void SolvePressure(uint2 id : SV_DispatchThreadID)
+{
+    uint w, h;
+    _Pressure.GetDimensions(w, h);
+
+    if (id.x < w && id.y < h)
+    {
+		uint2 pos = id.xy;
+        float l = _PressureRead[pos - int2(1,0)];
+        float r = _PressureRead[pos + int2(1,0)];
+        float b = _PressureRead[pos - int2(0,1)];
+        float t = _PressureRead[pos + int2(0,1)];
+
+        float d = _Divergence[pos];
+		float a = 1;// / (w * h);
+        _Pressure[id] = (l + r + b + t - a * d) / (a + 4);
+	}
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//  PressureGradientSubtract
+////////////////////////////////////////////////////////////////////////////////
+[numthreads(NUM_THREAD_X, NUM_THREAD_Y, NUM_THREAD_Z)]
+void PressureGradientSubtract(uint2 id : SV_DispatchThreadID)
+{
+    uint w, h;
+    _Velocity.GetDimensions(w, h);
+
+    if (id.x < w && id.y < h)
+    {
+		uint2 pos = id.xy;
+        float l = _PressureRead[pos - int2(1,0)];
+        float r = _PressureRead[pos + int2(1,0)];
+        float b = _PressureRead[pos - int2(0,1)];
+        float t = _PressureRead[pos + int2(0,1)];
+
+        float2 v = _Velocity[pos];
+        _Velocity[pos] = v - 0.5 * _VelocityToUV * (r-l, t-b);
+	}
+}
+

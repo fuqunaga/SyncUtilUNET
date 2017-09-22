@@ -218,7 +218,7 @@ MonoBehaviour:
   m_AutoCreatePlayer: 0
   m_PlayerSpawnMethod: 0
   m_OfflineScene: Offline
-  m_OnlineScene: LockStep
+  m_OnlineScene: 
   m_SpawnPrefabs:
   - {fileID: 1087970129871348, guid: 922b63f130b1bf44a85995243a02ef26, type: 2}
   - {fileID: 1552606861858982, guid: 6349d1f70247b7d41b31016a5bc310c1, type: 2}
@@ -359,7 +359,8 @@ MonoBehaviour:
   - {fileID: 102900000, guid: 32e288e16873fec4cb5ec41a0123946f, type: 3}
   - {fileID: 102900000, guid: 69d81700c7826b948ad6e0d7f95623c0, type: 3}
   - {fileID: 102900000, guid: 5d7c27864394aa34cb6800d4165785f7, type: 3}
-  _idx: 5
+  - {fileID: 102900000, guid: c4f9706a825e8cc4ba8322101f897d1e, type: 3}
+  _idx: 6
   _onlineSceneNames:
   - SyncParam
   - SyncBehaviourEnable,SyncGameObjectActive
@@ -367,6 +368,7 @@ MonoBehaviour:
   - InstanceRandom
   - PreRendering
   - LockStep
+  - LockStepGPU
 --- !u!1 &1406493531
 GameObject:
   m_ObjectHideFlags: 0
