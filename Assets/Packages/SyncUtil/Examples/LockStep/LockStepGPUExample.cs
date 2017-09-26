@@ -3,40 +3,39 @@ using UnityEngine.Networking;
 
 namespace SyncUtil.Example
 {
-    [RequireComponent(typeof(LockStep), typeof(GPUFluid), typeof(GPUFluidMouse))]
+    [RequireComponent(typeof(LockStep), typeof(LifeGame))]
     public class LockStepGPUExample : MonoBehaviour
     {
         public class Msg : MessageBase
         {
-            public GPUFluid.StepData data;
+            public LifeGame.StepData data;
         }
 
-        GPUFluid _fluid;
-        GPUFluidMouse _mouse;
+        public float _resolutionScale = 0.5f;
+        LifeGame _lifeGame;
 
         private void Start()
         {
-            _fluid = GetComponent<GPUFluid>();
-            _mouse = GetComponent<GPUFluidMouse>();
-
-            IniteLockStepCallbacks();
+            _lifeGame = GetComponent<LifeGame>();
+         
+            InitLockStepCallbacks();
         }
 
-        void IniteLockStepCallbacks()
+        void InitLockStepCallbacks()
         {
             var lockStep = GetComponent<LockStep>();
             lockStep.getDataFunc = () =>
             {
                 return new Msg()
                 {
-                    data = GPUFluidUpdator.CreateStepData(_mouse)
+                    data = LifeGameUpdater.CreateStepData(_resolutionScale)
                 };
             };
 
             lockStep.stepFunc += (stepCount, reader) =>
             {
                 var msg = reader.ReadMessage<Msg>();
-                Step(msg.data);
+                _lifeGame.Step(msg.data);
             };
 
             lockStep.onMissingCatchUpServer += () =>
@@ -45,12 +44,6 @@ namespace SyncUtil.Example
                 NetworkManager.Shutdown();
             };
             lockStep.onMissingCatchUpClient += () => Debug.Log("OnMissingCatchUp at Client. Server will disconnect.");
-        }
-
-
-        void Step(GPUFluid.StepData data)
-        {
-            _fluid.Step(data);
         }
     }
 }
