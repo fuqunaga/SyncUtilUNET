@@ -17,7 +17,8 @@ namespace SyncUtil.Example
         private void Start()
         {
             _lifeGame = GetComponent<LifeGame>();
-         
+            LifeGameUpdater.Reset();
+
             InitLockStepCallbacks();
         }
 
@@ -40,8 +41,8 @@ namespace SyncUtil.Example
 
             lockStep.onMissingCatchUpServer += () =>
             {
-                Debug.Log("OnMissingCatchUp at Server. NetworkManager.Shutdown() will be called.");
-                NetworkManager.Shutdown();
+                Debug.Log("OnMissingCatchUp at Server. NetworkManager.StopHost() will be called.");
+                NetworkManager.singleton.StopHost();
             };
             lockStep.onMissingCatchUpClient += () => Debug.Log("OnMissingCatchUp at Client. Server will disconnect.");
         }

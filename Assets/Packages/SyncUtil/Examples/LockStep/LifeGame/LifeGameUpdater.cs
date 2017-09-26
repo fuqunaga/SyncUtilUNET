@@ -24,6 +24,11 @@ namespace SyncUtil.Example
             _lifeGame.Step(CreateStepData(_resolutionScale));
         }
 
+        public static void Reset()
+        {
+            _lastWidth = _lastHeight = 0;
+        }
+
         public static LifeGame.StepData CreateStepData(float resolutionScale)
         {
             var isResize = (Screen.width != _lastWidth) || (Screen.height != _lastHeight);

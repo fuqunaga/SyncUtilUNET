@@ -34,8 +34,6 @@ namespace SyncUtil
         {
             _networkManager = GetComponent<NetworkManager>();
 
-            UpdateManager();
-
             if (_bootType != BootType.Manual) StartNetwork(_bootType);
         }
 
@@ -61,6 +59,8 @@ namespace SyncUtil
             while (true)
             {
                 yield return new WaitForEndOfFrame(); // Wait for set NetworkManager callback at Start()
+
+                UpdateManager();
                 if (!isActiveFunc())
                 {
                     startFunc();
