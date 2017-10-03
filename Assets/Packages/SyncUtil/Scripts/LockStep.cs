@@ -10,7 +10,7 @@ namespace SyncUtil
     {
         public Func<MessageBase> getDataFunc;
         public Action<int, NetworkReader> stepFunc;
-        public Action onMissingCatchUpServer;
+        public Func<bool> onMissingCatchUpServer; // if return true, StopHost() will be called.
         public Action onMissingCatchUpClient;
 
 
@@ -49,7 +49,12 @@ namespace SyncUtil
         {
             if (_datas.Any() && _datas.First().stepCount > 0)
             {
-                onMissingCatchUpServer?.Invoke();
+                var list = onMissingCatchUpServer.GetInvocationList();
+                var doStopHost = !list.Any() || list.Aggregate(false, (result, d) => result || ((Func<bool>)d)());
+                if ( doStopHost)
+                {
+                    NetworkManager.singleton.StopHost();
+                }
             }
         }
 

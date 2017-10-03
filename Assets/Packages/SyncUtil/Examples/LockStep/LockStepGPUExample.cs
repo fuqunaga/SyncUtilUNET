@@ -42,7 +42,7 @@ namespace SyncUtil.Example
             lockStep.onMissingCatchUpServer += () =>
             {
                 Debug.Log("OnMissingCatchUp at Server. NetworkManager.StopHost() will be called.");
-                NetworkManager.singleton.StopHost();
+                return true;
             };
             lockStep.onMissingCatchUpClient += () => Debug.Log("OnMissingCatchUp at Client. Server will disconnect.");
         }
