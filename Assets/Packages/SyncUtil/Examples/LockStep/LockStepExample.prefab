@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 114405948303317330}
   - component: {fileID: 114812573819865026}
   - component: {fileID: 114629792408392470}
+  - component: {fileID: 114288674907025404}
   m_Layer: 0
   m_Name: LockStepExample
   m_TagString: Untagged
@@ -42,6 +43,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114288674907025404
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1552606861858982}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a58064f61a35fa4eafd5c23060678c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114405948303317330
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -98,5 +110,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f3a6c1cabd282a4f855b8e6179aafb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dataNumMax: 500
+  _dataNumMax: 10000
   _stepNumMaxPerFrame: 10

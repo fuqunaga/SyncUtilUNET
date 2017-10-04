@@ -26,7 +26,7 @@ namespace SyncUtil
             {
                 _networkManagerController.DebugMenu();
 
-                if ( onGUI != null ) onGUI();
+                onGUI?.Invoke();
             }
         }
     }

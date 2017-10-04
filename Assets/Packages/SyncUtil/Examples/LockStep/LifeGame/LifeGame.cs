@@ -44,6 +44,7 @@ namespace SyncUtil.Example
         float _interval = 0f;
         ComputeBuffer _writeBufs;
         ComputeBuffer _readBufs;
+        public ComputeBuffer readBufs { get { return _readBufs; } }
 
         public float _InputRadius = 10f;
 

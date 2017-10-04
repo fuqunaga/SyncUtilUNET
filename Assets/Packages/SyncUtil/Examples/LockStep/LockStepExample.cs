@@ -47,6 +47,11 @@ namespace SyncUtil
                 return true;
             };
             lockStep.onMissingCatchUpClient += () => Debug.Log("OnMissingCatchUp at Client. Server will disconnect.");
+
+            lockStep.getHashFunc += () =>
+            {
+                return _sphere.transform.position.ToString(".00000");
+            };
         }
 
 

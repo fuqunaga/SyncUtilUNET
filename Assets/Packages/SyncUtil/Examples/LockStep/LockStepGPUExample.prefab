@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 114441101367718786}
   - component: {fileID: 20128152627474846}
   - component: {fileID: 114552089498324732}
+  - component: {fileID: 114735197881843552}
   m_Layer: 0
   m_Name: LockStepGPUExample
   m_TagString: Untagged
@@ -135,7 +136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f3a6c1cabd282a4f855b8e6179aafb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dataNumMax: 500
+  _dataNumMax: 100000
   _stepNumMaxPerFrame: 10
 --- !u!114 &114552089498324732
 MonoBehaviour:
@@ -156,3 +157,14 @@ MonoBehaviour:
   _width: 0
   _height: 0
   _seed: 0
+--- !u!114 &114735197881843552
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1475985329153236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a58064f61a35fa4eafd5c23060678c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
