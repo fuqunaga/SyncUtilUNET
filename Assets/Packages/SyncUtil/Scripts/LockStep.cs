@@ -15,7 +15,7 @@ namespace SyncUtil
     {
         // must set
         public Func<MessageBase> getDataFunc;
-        public Action<int, NetworkReader> stepFunc;
+        public Func<int, NetworkReader, bool> stepFunc;
 
         // optional
         public Func<bool> onMissingCatchUpServer; // if return true, StopHost() will be called.
@@ -26,8 +26,8 @@ namespace SyncUtil
         public int _dataNumMax = 10000;
         public int _stepNumMaxPerFrame = 10;
 
-        protected int _stepCountServer;
-        protected int _stepCountClient;
+        public int stepCountServer { get; protected set; }
+        public int stepCountClient { get; protected set; }
 
         protected int _checkStepCount = -1;
 
@@ -85,30 +85,33 @@ namespace SyncUtil
             {
                 if (_datas.Any() && stepFunc != null)
                 {
-                    var currentDatas = _datas.Reverse().Where(d => d.stepCount >= _stepCountClient).Reverse().Take(_stepNumMaxPerFrame);
+                    var currentDatas = _datas.Reverse().Where(d => d.stepCount >= stepCountClient).Reverse().Take(_stepNumMaxPerFrame);
                     if (currentDatas.Any())
                     {
                         var firstStepCount = currentDatas.First().stepCount;
-                        if (firstStepCount > _stepCountClient)
+                        if (firstStepCount > stepCountClient)
                         {
-                            Debug.LogWarning($"Wrong step count Expected[{_stepCountClient}], min data's[{firstStepCount}]");
+                            Debug.LogWarning($"Wrong step count Expected[{stepCountClient}], min data's[{firstStepCount}]");
                             onMissingCatchUpClient?.Invoke();
                         }
                         else
                         {
                             currentDatas.ToList().ForEach(data =>
                             {
-                                stepFunc(data.stepCount, new NetworkReader(data.bytes));
-                                if (_checkStepCount >= 0)
+                                var isStepEnable = stepFunc(data.stepCount, new NetworkReader(data.bytes));
+                                if (isStepEnable)
                                 {
-                                    Assert.IsTrue(_stepCountClient <= _checkStepCount);
-                                    if (_stepCountClient == _checkStepCount)
+                                    if (_checkStepCount >= 0)
                                     {
-                                        ReturnCheckConsistency();
-                                        _checkStepCount = -1;
+                                        Assert.IsTrue(stepCountClient <= _checkStepCount);
+                                        if (stepCountClient == _checkStepCount)
+                                        {
+                                            ReturnCheckConsistency();
+                                            _checkStepCount = -1;
+                                        }
                                     }
+                                    ++stepCountClient;
                                 }
-                                ++_stepCountClient;
                             });
                         }
                     }
@@ -128,9 +131,9 @@ namespace SyncUtil
                     _writer.Write(msg);
                     var bytes = _writer.ToArray();
 
-                    _datas.Add(new Data() { stepCount = _stepCountServer, bytes = bytes });
+                    _datas.Add(new Data() { stepCount = stepCountServer, bytes = bytes });
                     if (_datas.Count > _dataNumMax) _datas.RemoveAt(0);
-                    ++_stepCountServer;
+                    ++stepCountServer;
                 }
             }
         }
@@ -182,7 +185,7 @@ namespace SyncUtil
             connectionIdToHash.Clear();
             _lastConsistency = Consistency.CHECKING;
 
-            NetworkServer.SendToAll(CustomMsgType.LockStepConsistency, new IntegerMessage(_stepCountServer + delayStepCount));
+            NetworkServer.SendToAll(CustomMsgType.LockStepConsistency, new IntegerMessage(stepCountServer + delayStepCount));
             var time = Time.time;
 
             yield return new WaitUntil(() => ((Time.time - time) > timeOut) || isCompleteConnectionIdToHash);

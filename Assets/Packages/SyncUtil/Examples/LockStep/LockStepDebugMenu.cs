@@ -14,7 +14,7 @@ namespace SyncUtil.Example
             _lockStep = GetComponent<LockStep>();
 
             _debugMenu = FindObjectOfType<DebugMenuForExample>();
-            _debugMenu.onGUI = _DebugMenu;
+            _debugMenu.onGUI += _DebugMenu;
         }
 
         private void OnDestroy()

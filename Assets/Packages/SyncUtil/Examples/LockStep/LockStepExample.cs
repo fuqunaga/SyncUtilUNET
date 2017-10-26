@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
 
-namespace SyncUtil
+namespace SyncUtil.Example
 {
     [RequireComponent(typeof(LockStep))]
-    public class LockStepExample : MonoBehaviour
+    public class LockStepExample : LockStepExampleBase
     {
         public class Msg : MessageBase
         {
@@ -16,8 +16,10 @@ namespace SyncUtil
         public float damping = 0.9f;
         public float forceMax = 0.1f;
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
+
             _sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             _sphere.transform.SetParent(transform);
 
@@ -37,8 +39,12 @@ namespace SyncUtil
 
             lockStep.stepFunc += (stepCount, reader) =>
             {
-                var msg = reader.ReadMessage<Msg>();
-                Step(msg.force);
+                if (_stepEnable)
+                {
+                    var msg = reader.ReadMessage<Msg>();
+                    Step(msg.force);
+                }
+                return _stepEnable;
             };
 
             lockStep.onMissingCatchUpServer += () =>

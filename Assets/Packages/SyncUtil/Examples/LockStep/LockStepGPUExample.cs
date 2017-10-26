@@ -4,7 +4,7 @@ using UnityEngine.Networking;
 namespace SyncUtil.Example
 {
     [RequireComponent(typeof(LockStep), typeof(LifeGame))]
-    public class LockStepGPUExample : MonoBehaviour
+    public class LockStepGPUExample : LockStepExampleBase
     {
         public class Msg : MessageBase
         {
@@ -14,13 +14,15 @@ namespace SyncUtil.Example
         public float _resolutionScale = 0.5f;
         LifeGame _lifeGame;
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
             _lifeGame = GetComponent<LifeGame>();
             LifeGameUpdater.Reset();
 
             InitLockStepCallbacks();
         }
+
 
         void InitLockStepCallbacks()
         {
@@ -35,8 +37,12 @@ namespace SyncUtil.Example
 
             lockStep.stepFunc += (stepCount, reader) =>
             {
-                var msg = reader.ReadMessage<Msg>();
-                _lifeGame.Step(msg.data);
+                if (_stepEnable)
+                {
+                    var msg = reader.ReadMessage<Msg>();
+                    _lifeGame.Step(msg.data);
+                }
+                return _stepEnable;
             };
 
             lockStep.onMissingCatchUpServer += () =>
