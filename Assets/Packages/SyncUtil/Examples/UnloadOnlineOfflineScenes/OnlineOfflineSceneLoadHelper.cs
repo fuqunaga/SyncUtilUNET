@@ -28,13 +28,12 @@ namespace SyncUtil
         [InitializeOnLoadMethod]
         public static void Init()
         {
-            EditorApplication.playmodeStateChanged += PlayModeStateChanged;
+            EditorApplication.playModeStateChanged += PlayModeStateChanged;
         }
 
-        static void PlayModeStateChanged()
+        static void PlayModeStateChanged(PlayModeStateChange change)
         {
-            var startPlay = !EditorApplication.isPlaying && EditorApplication.isPlayingOrWillChangePlaymode;
-            if (startPlay && (Instance != null))
+            if (change == PlayModeStateChange.ExitingEditMode && (Instance != null))
             {
                 Instance.UnloadScenes();
             }
