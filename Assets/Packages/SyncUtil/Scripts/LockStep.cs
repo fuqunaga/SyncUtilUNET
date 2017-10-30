@@ -155,7 +155,18 @@ namespace SyncUtil
             NOT_MATCH,
             TIME_OUT
         }
-        Consistency _lastConsistency = Consistency.NOT_CHECK_YET;
+
+        public class ConsistencyData
+        {
+            public int stepCount;
+            public Consistency consistency;
+        }
+
+        ConsistencyData _lastConsistency = new ConsistencyData()
+        {
+            stepCount = -1,
+            consistency = Consistency.NOT_CHECK_YET
+        };
 
 
         public override void OnStartServer()
@@ -169,7 +180,7 @@ namespace SyncUtil
 
 
         [Server]
-        public Consistency GetLastConsistency()
+        public ConsistencyData GetLastConsistencyData()
         {
             return _lastConsistency;
         }
@@ -180,24 +191,27 @@ namespace SyncUtil
             StartCoroutine(CheckConsistencyCoroutine());
         }
 
-        protected IEnumerator CheckConsistencyCoroutine(float timeOut = 10f, int delayStepCount=10)
+        protected IEnumerator CheckConsistencyCoroutine(float timeOut = 10f, int delayStepCount = 10)
         {
             connectionIdToHash.Clear();
-            _lastConsistency = Consistency.CHECKING;
 
-            NetworkServer.SendToAll(CustomMsgType.LockStepConsistency, new IntegerMessage(stepCountServer + delayStepCount));
+            var checkStepCount = stepCountServer + delayStepCount;
+            _lastConsistency.stepCount = checkStepCount;
+            _lastConsistency.consistency = Consistency.CHECKING;
+
+            NetworkServer.SendToAll(CustomMsgType.LockStepConsistency, new IntegerMessage(checkStepCount));
             var time = Time.time;
 
             yield return new WaitUntil(() => ((Time.time - time) > timeOut) || isCompleteConnectionIdToHash);
 
 
-            if ( isCompleteConnectionIdToHash )
+            if (isCompleteConnectionIdToHash)
             {
-                _lastConsistency = (connectionIdToHash.Values.Distinct().Count() == 1) ? Consistency.MATCH : Consistency.NOT_MATCH;
+                _lastConsistency.consistency = (connectionIdToHash.Values.Distinct().Count() == 1) ? Consistency.MATCH : Consistency.NOT_MATCH;
             }
             else
             {
-                _lastConsistency = Consistency.TIME_OUT;
+                _lastConsistency.consistency = Consistency.TIME_OUT;
             }
         }
         #endregion

@@ -32,7 +32,6 @@ namespace SyncUtil.Example
 
         public static void DebugMenu(LockStep lockStep)
         {
-
             var connectionCount = NetworkServer.connections.Count;
             GUILayout.Label("Connection Count: " + connectionCount);
 
@@ -45,8 +44,8 @@ namespace SyncUtil.Example
                         lockStep.StartCheckConsistency();
                     }
 
-                    var consistency = lockStep.GetLastConsistency();
-                    GUILayout.Label(consistency.ToString());
+                    var data = lockStep.GetLastConsistencyData();
+                    GUILayout.Label(data.consistency + " step:" + data.stepCount);
                 }
             }
         }
