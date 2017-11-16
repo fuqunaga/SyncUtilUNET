@@ -85,13 +85,6 @@ namespace SyncUtil
             }
         }
 
-
-        private void Update()
-        {
-            Debug.Log($"NetworkManager != null [{_networkManager != null}]");
-            if (_networkManager != null) Debug.Log($"isActive [{_networkManager.isNetworkActive}]");
-        }
-
         public virtual void OnGUI()
         {
             if (_networkManager != null && !_networkManager.isNetworkActive)
