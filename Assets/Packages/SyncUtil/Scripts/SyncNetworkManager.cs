@@ -49,6 +49,14 @@ namespace SyncUtil
             base.OnClientConnect(conn);
             _OnClientConnect(conn);
         }
+
+
+        public event System.Action<NetworkConnection, int> _OnClientError = delegate { };
+        public override void OnClientError(NetworkConnection conn, int errorCode)
+        {
+            base.OnClientError(conn, errorCode);
+            _OnClientError(conn, errorCode);
+        }
         #endregion
     }
 }

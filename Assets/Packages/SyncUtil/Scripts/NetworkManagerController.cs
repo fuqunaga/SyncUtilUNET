@@ -27,12 +27,12 @@ namespace SyncUtil
         public virtual float _autoConnectInterval { get; } = 10f;
 
 
-        NetworkManager _networkManager;
+        SyncNetworkManager _networkManager;
 
 
         public virtual void Start()
         {
-            _networkManager = GetComponent<NetworkManager>();
+            _networkManager = GetComponent<SyncNetworkManager>();
 
             if (_bootType != BootType.Manual) StartNetwork(_bootType);
         }
@@ -47,12 +47,26 @@ namespace SyncUtil
             switch (bootType)
             {
                 case BootType.Host: routine = StartConnectLoop(() => mgr.client != null, () => mgr.StartHost()); break;
-                case BootType.Client: routine = StartConnectLoop(() => mgr.client != null, () => mgr.StartClient()); break;
+                case BootType.Client: routine = StartConnectLoop(() => mgr.client != null, StartClient); break;
                 case BootType.Server: routine = StartConnectLoop(() => NetworkServer.active, () => mgr.StartServer()); break;
             }
 
             StartCoroutine(routine);
         }
+
+        void StartClient()
+        {
+            _networkManager._OnClientError -= OnClientError;
+            _networkManager._OnClientError += OnClientError;
+
+            _networkManager.StartClient();
+        }
+
+        void OnClientError(NetworkConnection conn, int errorCode)
+        {
+            _networkManager.StopClient();
+        }
+
 
         IEnumerator StartConnectLoop(Func<bool> isActiveFunc, Action startFunc)
         {
@@ -69,6 +83,13 @@ namespace SyncUtil
                 yield return new WaitWhile(isActiveFunc);
                 yield return new WaitForSeconds(_autoConnectInterval);
             }
+        }
+
+
+        private void Update()
+        {
+            Debug.Log($"NetworkManager != null [{_networkManager != null}]");
+            if (_networkManager != null) Debug.Log($"isActive [{_networkManager.isNetworkActive}]");
         }
 
         public virtual void OnGUI()
