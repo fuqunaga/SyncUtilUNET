@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 
-namespace SyncUtil
+namespace SyncUtil.Example
 {
     [RequireComponent(typeof(ParticleSystem), typeof(InstanceRandom))]
     public class ParticleSystemWithInstanceRandom : MonoBehaviour

@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Networking;
@@ -13,7 +12,7 @@ namespace SyncUtil
     [NetworkSettings(sendInterval = 0f)]
     public class LockStep : NetworkBehaviour
     {
-        // must set
+        // required
         public Func<MessageBase> getDataFunc;
         public Func<int, NetworkReader, bool> stepFunc;
 

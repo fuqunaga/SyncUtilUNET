@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace SyncUtil
+namespace SyncUtil.Example
 {
     /// <summary>
     /// this logs will not be called when it is in online/offline scene

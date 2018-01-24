@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace SyncUtil
+namespace SyncUtil.Example
 {
     [RequireComponent(typeof(SceneSelectorForExample))]
     public class NetworkManagerControllerSample : NetworkManagerController

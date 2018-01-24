@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace SyncUtil
+namespace SyncUtil.Example
 {
     [ExecuteInEditMode]
     public class SceneSelectorForExample : MonoBehaviour

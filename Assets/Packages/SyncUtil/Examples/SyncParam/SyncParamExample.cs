@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace SyncUtil
+namespace SyncUtil.Example
 {
 
     public class SyncParamExample : MonoBehaviour

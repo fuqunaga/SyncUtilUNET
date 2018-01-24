@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace SyncUtil
+namespace SyncUtil.Example
 {
     public class PreRenderingDebugMenu : MonoBehaviour
     {

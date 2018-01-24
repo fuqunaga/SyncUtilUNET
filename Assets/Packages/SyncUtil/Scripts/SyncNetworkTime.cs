@@ -1,44 +1,47 @@
 ﻿using UnityEngine;
-using SyncUtil;
 using UnityEngine.Networking;
 
-public class SyncNetworkTime : MonoBehaviour
+
+namespace SyncUtil
 {
-    #region singleton
-    protected static SyncNetworkTime _instance;
-    public static SyncNetworkTime Instance { get { return _instance ?? (_instance = (FindObjectOfType<SyncNetworkTime>() ?? (new GameObject("SyncNetworkTime", typeof(SyncNetworkTime))).GetComponent<SyncNetworkTime>())); } }
-    #endregion
-
-    #region type define
-    public class NetworkTimeMessage : MessageBase
+    public class SyncNetworkTime : MonoBehaviour
     {
-        public double time;
-    }
-    #endregion
+        #region singleton
+        protected static SyncNetworkTime _instance;
+        public static SyncNetworkTime Instance { get { return _instance ?? (_instance = (FindObjectOfType<SyncNetworkTime>() ?? (new GameObject("SyncNetworkTime", typeof(SyncNetworkTime))).GetComponent<SyncNetworkTime>())); } }
+        #endregion
 
-    double _offset;
-    public double time { get { return Network.time + _offset; } }
-
-    public void Start()
-    {
-        var networkManager = SyncNetworkManager.singleton;
-
-
-        networkManager._OnServerConnect += (conn) =>
+        #region type define
+        public class NetworkTimeMessage : MessageBase
         {
-            NetworkServer.SendToClient(conn.connectionId, CustomMsgType.NetworkTime, new NetworkTimeMessage() { time = Network.time });
-        };
+            public double time;
+        }
+        #endregion
 
+        double _offset;
+        public double time { get { return Network.time + _offset; } }
 
-        networkManager._OnStartClient += (client) =>
+        public void Start()
         {
-            if (SyncNet.isSlaver)
+            var networkManager = SyncNetworkManager.singleton;
+
+
+            networkManager._OnServerConnect += (conn) =>
             {
-                client.RegisterHandler(CustomMsgType.NetworkTime, (msg) =>
+                NetworkServer.SendToClient(conn.connectionId, CustomMsgType.NetworkTime, new NetworkTimeMessage() { time = Network.time });
+            };
+
+
+            networkManager._OnStartClient += (client) =>
+            {
+                if (SyncNet.isSlaver)
                 {
-                    _offset = msg.ReadMessage<NetworkTimeMessage>().time - Network.time;
-                });
-            }
-        };
+                    client.RegisterHandler(CustomMsgType.NetworkTime, (msg) =>
+                    {
+                        _offset = msg.ReadMessage<NetworkTimeMessage>().time - Network.time;
+                    });
+                }
+            };
+        }
     }
 }

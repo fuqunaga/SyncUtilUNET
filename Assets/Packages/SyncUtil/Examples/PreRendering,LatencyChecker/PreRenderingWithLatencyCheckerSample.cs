@@ -1,41 +1,43 @@
 ﻿using SyncUtil;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PreRenderingWithLatencyCheckerSample : PreRenderingWithLatencyChecker
+
+namespace SyncUtil.Example
 {
-    public bool isEnable = true;
-    public bool autoDelay = true;
-    public float autoDelayOffset;
-
-    public override bool _enable { get { return isEnable; } }
-    public override bool _autoDelay { get { return autoDelay; } }
-    public override float _autoDelayOffset { get { return autoDelayOffset; } }
-
-
-    public void DebugMenu()
+    public class PreRenderingWithLatencyCheckerSample : PreRenderingWithLatencyChecker
     {
-        isEnable = GUILayout.Toggle(isEnable, "PreRendering");
+        public bool isEnable = true;
+        public bool autoDelay = true;
+        public float autoDelayOffset;
 
-        var enable = _preRendering.enabled;
-        if (enable)
+        public override bool _enable { get { return isEnable; } }
+        public override bool _autoDelay { get { return autoDelay; } }
+        public override float _autoDelayOffset { get { return autoDelayOffset; } }
+
+
+        public void DebugMenu()
         {
-            GUIUtil.Indent(() =>
+            isEnable = GUILayout.Toggle(isEnable, "PreRendering");
+
+            var enable = _preRendering.enabled;
+            if (enable)
             {
-                var data = _preRendering.data;
-                data.passthrough = GUILayout.Toggle(data.passthrough, "PassThrough");
-
-                GUI.enabled = !autoDelay;
-                data.delay = GUIUtil.Slider(data.delay, "Delay");
-                GUI.enabled = true;
-
-                autoDelay = GUILayout.Toggle(autoDelay, "AutoDelay");
-                if (autoDelay)
+                GUIUtil.Indent(() =>
                 {
-                    autoDelayOffset = GUIUtil.Slider(autoDelayOffset, - 1f, 1f, "AutoDelayOffset");
-                }
-            });
+                    var data = _preRendering.data;
+                    data.passthrough = GUILayout.Toggle(data.passthrough, "PassThrough");
+
+                    GUI.enabled = !autoDelay;
+                    data.delay = GUIUtil.Slider(data.delay, "Delay");
+                    GUI.enabled = true;
+
+                    autoDelay = GUILayout.Toggle(autoDelay, "AutoDelay");
+                    if (autoDelay)
+                    {
+                        autoDelayOffset = GUIUtil.Slider(autoDelayOffset, -1f, 1f, "AutoDelayOffset");
+                    }
+                });
+            }
         }
     }
 }

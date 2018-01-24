@@ -1,13 +1,20 @@
 ﻿using UnityEngine;
-using SyncUtil;
 
-public class NetworkTimeForShader : MonoBehaviour
+namespace SyncUtil
 {
-    public string _propertyName = "g_Time";
 
-    public void Update()
+    /// <summary>
+    /// Unity's _Time style shader property
+    /// </summary>
+    public class NetworkTimeForShader : MonoBehaviour
     {
-        var time = (float)SyncNet.networkTime;
-        Shader.SetGlobalVector(_propertyName, new Vector4(time / 20f, time, time * 2f, time * 3f));
+        public string _propertyName = "g_Time";
+
+        public void Update()
+        {
+            var time = (float)SyncNet.networkTime;
+            Shader.SetGlobalVector(_propertyName, new Vector4(time / 20f, time, time * 2f, time * 3f));
+        }
     }
+
 }

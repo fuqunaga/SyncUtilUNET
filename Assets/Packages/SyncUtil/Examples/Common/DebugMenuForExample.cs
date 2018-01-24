@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace SyncUtil
+namespace SyncUtil.Example
 {
     public class DebugMenuForExample : MonoBehaviour
     {
