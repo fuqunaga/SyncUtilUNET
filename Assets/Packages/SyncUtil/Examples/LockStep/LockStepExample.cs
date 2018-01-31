@@ -3,7 +3,7 @@ using UnityEngine.Networking;
 
 namespace SyncUtil.Example
 {
-    [RequireComponent(typeof(LockStep))]
+    [RequireComponent(typeof(ILockStep))]
     public class LockStepExample : LockStepExampleBase
     {
         public class Msg : MessageBase
@@ -28,7 +28,7 @@ namespace SyncUtil.Example
 
         void IniteLockStepCallbacks()
         {
-            var lockStep = GetComponent<LockStep>();
+            var lockStep = GetComponent<ILockStep>();
             lockStep.getDataFunc = () =>
             {
                 return new Msg()
@@ -37,7 +37,7 @@ namespace SyncUtil.Example
                 };
             };
 
-            lockStep.stepFunc += (stepCount, reader) =>
+            lockStep.stepFunc = (stepCount, reader) =>
             {
                 if (_stepEnable)
                 {
@@ -47,14 +47,14 @@ namespace SyncUtil.Example
                 return _stepEnable;
             };
 
-            lockStep.onMissingCatchUpServer += () =>
+            lockStep.onMissingCatchUpServer = () =>
             {
                 Debug.Log("OnMissingCatchUp at Server. NetworkManager.Shutdown() will be called.");
                 return true;
             };
-            lockStep.onMissingCatchUpClient += () => Debug.Log("OnMissingCatchUp at Client. Server will disconnect.");
+            lockStep.onMissingCatchUpClient = () => Debug.Log("OnMissingCatchUp at Client. Server will disconnect.");
 
-            lockStep.getHashFunc += () =>
+            lockStep.getHashFunc = () =>
             {
                 return _sphere.transform.position.ToString(".00000");
             };

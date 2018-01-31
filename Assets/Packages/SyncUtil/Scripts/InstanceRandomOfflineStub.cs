@@ -1,17 +1,9 @@
 ﻿using UnityEngine;
-using UnityEngine.Networking;
 
 namespace SyncUtil
 {
-    interface IInstanceRandom
+    public class InstanceRandomOfflineStub : MonoBehaviour, IInstanceRandom
     {
-        CustomRandom rand { get; }
-    }
-
-
-    public class InstanceRandom : NetworkBehaviour, IInstanceRandom
-    {
-        [SyncVar]
         protected int seed;
 
         public void Awake()

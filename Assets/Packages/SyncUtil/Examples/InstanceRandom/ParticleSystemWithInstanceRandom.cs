@@ -3,7 +3,7 @@
 
 namespace SyncUtil.Example
 {
-    [RequireComponent(typeof(ParticleSystem), typeof(InstanceRandom))]
+    [RequireComponent(typeof(ParticleSystem), typeof(IInstanceRandom))]
     public class ParticleSystemWithInstanceRandom : MonoBehaviour
     {
         private void Start()
@@ -12,7 +12,7 @@ namespace SyncUtil.Example
             ps.Stop();
             ps.Clear();
 
-            var instanceRandom = GetComponent<InstanceRandom>();
+            var instanceRandom = GetComponent<IInstanceRandom>();
             ps.randomSeed = (uint)instanceRandom.rand.RandInt();
 
             ps.Play();

@@ -9,17 +9,43 @@ using UnityEngine.Networking.NetworkSystem;
 
 namespace SyncUtil
 {
-    [NetworkSettings(sendInterval = 0f)]
-    public class LockStep : NetworkBehaviour
+    public interface ILockStep
     {
         // required
-        public Func<MessageBase> getDataFunc;
-        public Func<int, NetworkReader, bool> stepFunc;
+        Func<MessageBase> getDataFunc { set; }
+        Func<int, NetworkReader, bool> stepFunc { set; }
 
         // optional
-        public Func<bool> onMissingCatchUpServer; // if return true, StopHost() will be called.
-        public Action onMissingCatchUpClient;
-        public Func<string> getHashFunc; // for CheckConsistency
+        Func<bool> onMissingCatchUpServer { set; } // if return true, StopHost() will be called.
+        Action onMissingCatchUpClient { set; }
+        Func<string> getHashFunc { set; } // for CheckConsistency
+
+        LockStep.ConsistencyData GetLastConsistencyData();
+        void StartCheckConsistency();
+
+        int stepCountServer { get; }
+        int stepCountClient { get; }
+    }
+
+
+    [NetworkSettings(sendInterval = 0f)]
+    public class LockStep : NetworkBehaviour, ILockStep
+    {
+        #region Overide 
+
+        protected Func<MessageBase> _getDataFunc;
+        protected Func<int, NetworkReader, bool> _stepFunc;
+        protected Func<bool> _onMissingCatchUpServer;
+        protected Action _onMissingCatchUpClient;
+        protected Func<string> _getHashFunc;
+
+        public Func<MessageBase> getDataFunc { set { _getDataFunc = value; } }
+        public Func<int, NetworkReader, bool> stepFunc { set { _stepFunc = value; } }
+        public Func<bool> onMissingCatchUpServer { set { _onMissingCatchUpServer = value; } }
+        public Action onMissingCatchUpClient { set { _onMissingCatchUpClient = value; } }
+        public Func<string> getHashFunc { set { _getHashFunc = value; } }
+
+        #endregion
 
 
         public int _dataNumMax = 10000;
@@ -63,7 +89,7 @@ namespace SyncUtil
             var isMissingFirstData = _datas.Any() && _datas.First().stepCount > 0;
             if (isMissingFirstData)
             {
-                var list = onMissingCatchUpServer.GetInvocationList();
+                var list = _onMissingCatchUpServer.GetInvocationList();
                 var doStopHost = !list.Any() || list.Aggregate(false, (result, d) => result || ((Func<bool>)d)());
                 if (doStopHost)
                 {
@@ -82,7 +108,7 @@ namespace SyncUtil
 
             if (SyncNet.isClient)
             {
-                if (_datas.Any() && stepFunc != null)
+                if (_datas.Any() && _stepFunc != null)
                 {
                     var currentDatas = _datas.Reverse().Where(d => d.stepCount >= stepCountClient).Reverse().Take(_stepNumMaxPerFrame);
                     if (currentDatas.Any())
@@ -91,13 +117,13 @@ namespace SyncUtil
                         if (firstStepCount > stepCountClient)
                         {
                             Debug.LogWarning($"Wrong step count Expected[{stepCountClient}], min data's[{firstStepCount}]");
-                            onMissingCatchUpClient?.Invoke();
+                            _onMissingCatchUpClient?.Invoke();
                         }
                         else
                         {
                             currentDatas.ToList().ForEach(data =>
                             {
-                                var isStepEnable = stepFunc(data.stepCount, new NetworkReader(data.bytes));
+                                var isStepEnable = _stepFunc(data.stepCount, new NetworkReader(data.bytes));
                                 if (isStepEnable)
                                 {
                                     if (_checkStepCount >= 0)
@@ -121,9 +147,9 @@ namespace SyncUtil
         NetworkWriter _writer = new NetworkWriter();
         protected virtual void SendLockStep()
         {
-            if (getDataFunc != null)
+            if (_getDataFunc != null)
             {
-                var msg = getDataFunc();
+                var msg = _getDataFunc();
                 if (msg != null)
                 {
                     _writer.SeekZero();
@@ -179,16 +205,10 @@ namespace SyncUtil
 
 
         [Server]
-        public ConsistencyData GetLastConsistencyData()
-        {
-            return _lastConsistency;
-        }
+        public ConsistencyData GetLastConsistencyData() => _lastConsistency;
 
         [Server]
-        public void StartCheckConsistency()
-        {
-            StartCoroutine(CheckConsistencyCoroutine());
-        }
+        public void StartCheckConsistency() => StartCoroutine(CheckConsistencyCoroutine());
 
         protected IEnumerator CheckConsistencyCoroutine(float timeOut = 10f, int delayStepCount = 10)
         {
@@ -230,7 +250,7 @@ namespace SyncUtil
         [Client]
         protected void ReturnCheckConsistency()
         {
-            NetworkManager.singleton.client.Send(CustomMsgType.LockStepConsistency, new StringMessage(getHashFunc()));
+            NetworkManager.singleton.client.Send(CustomMsgType.LockStepConsistency, new StringMessage(_getHashFunc()));
         }
         #endregion
 

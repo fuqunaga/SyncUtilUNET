@@ -10,7 +10,10 @@ namespace SyncUtil.Example
         protected virtual void Start()
         {
             var debugMenu = FindObjectOfType<DebugMenuForExample>();
-            debugMenu.onGUI += DebugMenu;
+            if (debugMenu != null)
+            {
+                debugMenu.onGUI += DebugMenu;
+            }
         }
 
         protected virtual  void OnDestroy()

@@ -3,15 +3,15 @@ using UnityEngine.Networking;
 
 namespace SyncUtil.Example
 {
-    [RequireComponent(typeof(LockStep))]
+    [RequireComponent(typeof(ILockStep))]
     public class LockStepDebugMenu : MonoBehaviour
     {
-        LockStep _lockStep;
+        ILockStep _lockStep;
         DebugMenuForExample _debugMenu;
 
         void Start()
         {
-            _lockStep = GetComponent<LockStep>();
+            _lockStep = GetComponent<ILockStep>();
 
             _debugMenu = FindObjectOfType<DebugMenuForExample>();
             _debugMenu.onGUI += _DebugMenu;
@@ -30,7 +30,7 @@ namespace SyncUtil.Example
             }
         }
 
-        public static void DebugMenu(LockStep lockStep)
+        public static void DebugMenu(ILockStep lockStep)
         {
             var connectionCount = NetworkServer.connections.Count;
             GUILayout.Label("Connection Count: " + connectionCount);

@@ -35,7 +35,7 @@ namespace SyncUtil.Example
                 };
             };
 
-            lockStep.stepFunc += (stepCount, reader) =>
+            lockStep.stepFunc = (stepCount, reader) =>
             {
                 if (_stepEnable)
                 {
@@ -45,14 +45,14 @@ namespace SyncUtil.Example
                 return _stepEnable;
             };
 
-            lockStep.onMissingCatchUpServer += () =>
+            lockStep.onMissingCatchUpServer = () =>
             {
                 Debug.Log("OnMissingCatchUp at Server. NetworkManager.StopHost() will be called.");
                 return true;
             };
-            lockStep.onMissingCatchUpClient += () => Debug.Log("OnMissingCatchUp at Client. Server will disconnect.");
+            lockStep.onMissingCatchUpClient = () => Debug.Log("OnMissingCatchUp at Client. Server will disconnect.");
 
-            lockStep.getHashFunc += () => LockStepHelper.GenerateComputeBufferHash<LifeGame.Data>(_lifeGame.readBufs);
+            lockStep.getHashFunc = () => LockStepHelper.GenerateComputeBufferHash<LifeGame.Data>(_lifeGame.readBufs);
         }
     }
 }
