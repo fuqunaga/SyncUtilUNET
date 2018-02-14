@@ -34,7 +34,7 @@ namespace SyncUtil
 
             networkManager._OnStartClient += (client) =>
             {
-                if (SyncNet.isSlaver)
+                if (SyncNet.isSlave)
                 {
                     client.RegisterHandler(CustomMsgType.NetworkTime, (msg) =>
                     {

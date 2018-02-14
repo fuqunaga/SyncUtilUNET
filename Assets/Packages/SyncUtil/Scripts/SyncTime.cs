@@ -32,7 +32,7 @@ namespace SyncUtil
         {
             SyncNetworkManager.singleton._OnStartClient += (client) =>
             {
-                if (SyncNet.isSlaver)
+                if (SyncNet.isSlave)
                 {
                     client.RegisterHandler(CustomMsgType.Time, (netMsg) =>
                     {

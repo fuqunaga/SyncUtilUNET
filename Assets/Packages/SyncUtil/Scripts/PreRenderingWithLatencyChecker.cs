@@ -40,7 +40,7 @@ namespace SyncUtil
         /*
         public void DebugMenu()
         {
-            _enable.OnGUI("PreRendering" + (SyncNet.isSlaver ? "(Always Off on Client)" : ""));
+            _enable.OnGUI("PreRendering" + (SyncNet.isSlave ? "(Always Off on Client)" : ""));
 
             var enable = _preRendering.enabled;
             if (enable)
