@@ -8,6 +8,7 @@ using UnityEngine.Networking;
 
 namespace SyncUtil
 {
+	[RequireComponent(typeof(SyncNetworkManager))]
     public class NetworkManagerController : MonoBehaviour
     {
         #region TypeDefine
@@ -33,6 +34,7 @@ namespace SyncUtil
         public virtual void Start()
         {
             _networkManager = GetComponent<SyncNetworkManager>();
+			Assert.IsTrue(_networkManager);
 
             if (_bootType != BootType.Manual) StartNetwork(_bootType);
         }
