@@ -76,7 +76,7 @@ namespace SyncUtil
 
             SyncNetworkManager.singleton._OnStartClient += (client) =>
             {
-                if (SyncNet.isSlaver)
+                if (SyncNet.isSlave)
                 {
                     client.RegisterHandler(CustomMsgType.Latency, (msg) =>
                     {
@@ -112,7 +112,7 @@ namespace SyncUtil
             }
 
 #if INCLUDE_UPDATE
-            if (SyncNet.isSlaver)
+            if (SyncNet.isSlave)
             {
                 if (_lastMsg != null && SyncNet.client.isConnected)
                 {

@@ -14,7 +14,7 @@ namespace SyncUtil
 
         // Not Server but Client.
         // warn Host: isServer == isClient == true
-        public static bool isSlaver { get { return !isServerOrStandAlone; } }
+        public static bool isSlave { get { return !isServerOrStandAlone; } }
 
         public static bool isActive { get { var nm = NetworkManager.singleton; return (nm !=null) && nm.isNetworkActive; } }
 
