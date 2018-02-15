@@ -35,7 +35,7 @@ namespace SyncUtil
                     });
                 }
 
-                if (SyncNet.isSlaver)
+                if (SyncNet.isSlave)
                 {
                     _fields.ForEach(field =>
                     {
