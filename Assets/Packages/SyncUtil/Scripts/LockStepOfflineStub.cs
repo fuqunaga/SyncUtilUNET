@@ -17,20 +17,40 @@ namespace SyncUtil
         protected Func<MessageBase> _getDataFunc;
         protected Func<int, NetworkReader, bool> _stepFunc;
 
+        protected Func<MessageBase> _getInitDataFunc;
+        protected Func<NetworkReader, bool> _initFunc;
 
 
 
         #region Unity
 
+        bool firstStep = true;
+
         private void Update()
         {
-            var msg = _getDataFunc();
-
-            var writer = new NetworkWriter();
-            writer.Write(msg);
-            if (_stepFunc(stepCount, new NetworkReader(writer)))
+            if (_getDataFunc != null)
             {
-                stepCount++;
+                if ( firstStep )
+                {
+                    firstStep = false;
+                    if ( _getInitDataFunc !=null)
+                    {
+                        var initMsg = _getInitDataFunc();
+                        var w = new NetworkWriter();
+                        w.Write(initMsg);
+                        _initFunc(new NetworkReader(w));
+                    }
+
+                }
+
+                var msg = _getDataFunc();
+
+                var writer = new NetworkWriter();
+                writer.Write(msg);
+                if (_stepFunc(stepCount, new NetworkReader(writer)))
+                {
+                    stepCount++;
+                }
             }
         }
 
@@ -41,6 +61,9 @@ namespace SyncUtil
 
         public Func<MessageBase> getDataFunc { set { _getDataFunc = value; } }
         public Func<int, NetworkReader, bool> stepFunc { set { _stepFunc = value; } }
+        public Func<MessageBase> getInitDataFunc { set { _getInitDataFunc = value; } }
+        public Func<NetworkReader, bool> initFunc { set { _initFunc = value; } }
+
         public Func<bool> onMissingCatchUpServer { set { } }
         public Action onMissingCatchUpClient { set { } }
         public Func<string> getHashFunc { set { } }

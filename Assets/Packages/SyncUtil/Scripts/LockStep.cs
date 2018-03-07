@@ -11,14 +11,23 @@ namespace SyncUtil
 {
     public interface ILockStep
     {
-        // required
+        #region Required
+
         Func<MessageBase> getDataFunc { set; }
         Func<int, NetworkReader, bool> stepFunc { set; }
 
-        // optional
+        #endregion
+
+
+        #region Optional
+
+        Func<MessageBase> getInitDataFunc { set; }
+        Func<NetworkReader, bool> initFunc { set; }
         Func<bool> onMissingCatchUpServer { set; } // if return true, StopHost() will be called.
         Action onMissingCatchUpClient { set; }
         Func<string> getHashFunc { set; } // for CheckConsistency
+
+        #endregion
 
         LockStep.ConsistencyData GetLastConsistencyData();
         void StartCheckConsistency();
@@ -35,17 +44,44 @@ namespace SyncUtil
 
         protected Func<MessageBase> _getDataFunc;
         protected Func<int, NetworkReader, bool> _stepFunc;
+
+        protected Func<MessageBase> _getInitDataFunc;
+        protected Func<NetworkReader, bool> _initFunc;
+
         protected Func<bool> _onMissingCatchUpServer;
         protected Action _onMissingCatchUpClient;
         protected Func<string> _getHashFunc;
 
         public Func<MessageBase> getDataFunc { set { _getDataFunc = value; } }
         public Func<int, NetworkReader, bool> stepFunc { set { _stepFunc = value; } }
+
+        public Func<MessageBase> getInitDataFunc { set { _getInitDataFunc = value; } }
+        public Func<NetworkReader, bool> initFunc { set { _initFunc = value; } }
+
+
         public Func<bool> onMissingCatchUpServer { set { _onMissingCatchUpServer = value; } }
         public Action onMissingCatchUpClient { set { _onMissingCatchUpClient = value; } }
         public Func<string> getHashFunc { set { _getHashFunc = value; } }
 
         #endregion
+
+
+        #region Type Define
+        public struct Data
+        {
+            public int stepCount;
+            public byte[] bytes;
+        }
+
+        public class SyncDatas : SyncListStruct<Data> { }
+
+        public struct InitData
+        {
+            public bool sended;
+            public byte[] bytes;
+        }
+
+        #endregion;
 
 
         public int _dataNumMax = 10000;
@@ -57,15 +93,11 @@ namespace SyncUtil
         protected int _checkStepCount = -1;
 
 
-        public struct Data
-        {
-            public int stepCount;
-            public byte[] bytes;
-        }
-
-        public class SyncDatas : SyncListStruct<Data> { }
 
         SyncDatas _datas = new SyncDatas();
+
+        [SyncVar]
+        InitData _initData = new InitData();
 
 
 
@@ -98,7 +130,6 @@ namespace SyncUtil
             }
         }
 
-
         protected virtual void Update()
         {
             if (SyncNet.isServer)
@@ -108,61 +139,109 @@ namespace SyncUtil
 
             if (SyncNet.isClient)
             {
-                if (_datas.Any() && _stepFunc != null)
-                {
-                    var currentDatas = _datas.Reverse().Where(d => d.stepCount >= stepCountClient).Reverse().Take(_stepNumMaxPerFrame);
-                    if (currentDatas.Any())
-                    {
-                        var firstStepCount = currentDatas.First().stepCount;
-                        if (firstStepCount > stepCountClient)
-                        {
-                            Debug.LogWarning($"Wrong step count Expected[{stepCountClient}], min data's[{firstStepCount}]");
-                            _onMissingCatchUpClient?.Invoke();
-                        }
-                        else
-                        {
-                            currentDatas.ToList().ForEach(data =>
-                            {
-                                var isStepEnable = _stepFunc(data.stepCount, new NetworkReader(data.bytes));
-                                if (isStepEnable)
-                                {
-                                    if (_checkStepCount >= 0)
-                                    {
-                                        Assert.IsTrue(stepCountClient <= _checkStepCount);
-                                        if (stepCountClient == _checkStepCount)
-                                        {
-                                            ReturnCheckConsistency();
-                                            _checkStepCount = -1;
-                                        }
-                                    }
-                                    ++stepCountClient;
-                                }
-                            });
-                        }
-                    }
-                }
+                Step();
             }
         }
 
-        NetworkWriter _writer = new NetworkWriter();
+
+
+        bool sendedInit;
         protected virtual void SendLockStep()
         {
             if (_getDataFunc != null)
             {
+                if (!sendedInit)
+                {
+                    var initData = new InitData() { sended = true };
+
+                    if (_getInitDataFunc != null)
+                    {
+                        var initMsg = _getInitDataFunc();
+                        if (initMsg != null)
+                        {
+                            initData.bytes = MsgToByte(initMsg);
+                        }
+                    }
+                    _initData = initData;
+                    sendedInit = true;
+                }
+
                 var msg = _getDataFunc();
                 if (msg != null)
                 {
-                    _writer.SeekZero();
-                    _writer.Write(msg);
-                    var bytes = _writer.ToArray();
-
-                    _datas.Add(new Data() { stepCount = stepCountServer, bytes = bytes });
+                    _datas.Add(new Data() { stepCount = stepCountServer, bytes = MsgToByte(msg) });
                     if (_datas.Count > _dataNumMax) _datas.RemoveAt(0);
                     ++stepCountServer;
                 }
             }
         }
 
+
+        NetworkWriter _writer = new NetworkWriter();
+
+        byte[] MsgToByte(MessageBase msg)
+        {
+            _writer.SeekZero();
+            _writer.Write(msg);
+            return _writer.ToArray();
+        }
+
+
+        bool firstStep = true;
+
+        void Step()
+        {
+            if (_datas.Any() && _stepFunc != null)
+            {
+                var currentDatas = _datas.Reverse().Where(d => d.stepCount >= stepCountClient).Reverse().Take(_stepNumMaxPerFrame);
+                if (currentDatas.Any())
+                {
+                    var firstStepCount = currentDatas.First().stepCount;
+                    if (firstStepCount > stepCountClient)
+                    {
+                        Debug.LogWarning($"Wrong step count Expected[{stepCountClient}], min data's[{firstStepCount}]");
+                        _onMissingCatchUpClient?.Invoke();
+                    }
+                    else
+                    {
+                        if (firstStep)
+                        {
+                            if (_initFunc != null)
+                            {
+                                if (!_initData.sended)
+                                {
+                                    // InitData is NOT reach to this client yet
+                                    return;
+                                }
+                                firstStep = _initFunc(new NetworkReader(_initData.bytes));
+                            }
+                            else
+                            {
+                                firstStep = true;
+                            }
+                        }
+
+                        currentDatas.ToList().ForEach(data =>
+                        {
+                            var isStepEnable = _stepFunc(data.stepCount, new NetworkReader(data.bytes));
+                            if (isStepEnable)
+                            {
+                                if (_checkStepCount >= 0)
+                                {
+                                    Assert.IsTrue(stepCountClient <= _checkStepCount);
+                                    if (stepCountClient == _checkStepCount)
+                                    {
+                                        ReturnCheckConsistency();
+                                        _checkStepCount = -1;
+                                    }
+                                }
+                                ++stepCountClient;
+                            }
+                        });
+                    }
+                }
+            }
+        }
 
 
         #region Check Consistency Implement
