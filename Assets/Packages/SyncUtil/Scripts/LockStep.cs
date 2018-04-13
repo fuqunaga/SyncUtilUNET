@@ -213,11 +213,11 @@ namespace SyncUtil
                                     // InitData is NOT reach to this client yet
                                     return;
                                 }
-                                firstStep = _initFunc(new NetworkReader(_initData.bytes));
+                                firstStep = !_initFunc(new NetworkReader(_initData.bytes));
                             }
                             else
                             {
-                                firstStep = true;
+                                firstStep = false;
                             }
                         }
 

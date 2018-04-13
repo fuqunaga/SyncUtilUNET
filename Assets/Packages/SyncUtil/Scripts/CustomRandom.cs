@@ -30,7 +30,7 @@ namespace SyncUtil
                 Vector3 ret;
                 do
                 {
-                    ret = (new Vector3(value, value, value) - Vector3.one * 0.5f).normalized;
+                    ret = (vector3 - Vector3.one * 0.5f).normalized;
                 } while (ret.sqrMagnitude == 0f);
                 return ret;
             }
@@ -43,7 +43,7 @@ namespace SyncUtil
                 Vector2 ret;
                 do
                 {
-                    ret = (new Vector2(value, value) - Vector2.one * 0.5f) * 2f;
+                    ret = (vector2 - Vector2.one * 0.5f) * 2f;
                 } while (ret.sqrMagnitude > 1f);
 
                 return ret;
@@ -57,7 +57,7 @@ namespace SyncUtil
                 Vector3 ret;
                 do
                 {
-                    ret = (new Vector3(value, value, value) - Vector3.one * 0.5f) * 2f;
+                    ret = (vector3 - Vector3.one * 0.5f) * 2f;
                 } while (ret.sqrMagnitude > 1f);
 
                 return ret;
@@ -74,11 +74,15 @@ namespace SyncUtil
 
 
         #region Extra Methods
+
         public int RandInt()
         {
             return Mathf.FloorToInt(value * int.MaxValue);
         }
 
+        public Vector2 vector2 => new Vector2(value, value);
+
+        public Vector3 vector3 => new Vector3(value, value, value);
 
         #endregion
     }
