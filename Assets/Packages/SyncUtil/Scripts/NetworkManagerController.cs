@@ -74,7 +74,8 @@ namespace SyncUtil
         {
             while (true)
             {
-                yield return new WaitForEndOfFrame(); // Wait for set NetworkManager callback at Start()
+                //yield return new WaitForEndOfFrame(); // Wait for set NetworkManager callback at Start()
+                yield return new WaitForSeconds(0.1f);
 
                 UpdateManager();
                 if (!isActiveFunc())
