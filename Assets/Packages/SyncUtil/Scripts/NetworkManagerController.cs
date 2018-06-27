@@ -108,6 +108,8 @@ namespace SyncUtil
                         });
                     }
 
+					GUILayout.Label("");
+					GUILayout.Label("Manual Boot Type:");
                     if (GUILayout.Button("Host")) { OnNetworkStartByManual(); StartNetwork(BootType.Host); }
                     if (GUILayout.Button("Client")) { OnNetworkStartByManual(); StartNetwork(BootType.Client); }
                     if (GUILayout.Button("Server")) { OnNetworkStartByManual(); StartNetwork(BootType.Server); }
