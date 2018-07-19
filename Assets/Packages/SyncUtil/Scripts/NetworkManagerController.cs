@@ -153,7 +153,7 @@ namespace SyncUtil
                     _fold = new GUIUtil.Fold("Time Debug", () =>
                     {
                         GUILayout.Label(string.Format("SyncTime: {0:0.000}", SyncNet.time));
-                        GUILayout.Label(string.Format("Network.time Synced/Orig: {0:0.000} / {1:0.000}", SyncNet.networkTime, Network.time));
+                        //GUILayout.Label(string.Format("Network.time Synced/Orig: {0:0.000} / {1:0.000}", SyncNet.networkTime, Network.time));
 
                         LatencyChecker.Instance._conectionLatencyTable.ToList().ForEach(pair =>
                         {

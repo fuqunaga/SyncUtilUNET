@@ -27,7 +27,7 @@ namespace SyncUtil
         #region type define
         public class LatencyMessage : MessageBase
         {
-            public double serverTime;
+            public float serverTime;
         }
 
         public class Data
@@ -54,6 +54,8 @@ namespace SyncUtil
         Dictionary<int, LatencyMessage> _conectionLatencyPool = new Dictionary<int, LatencyMessage>();
         LatencyMessage _lastMsg;
 #endif
+
+        protected float time => Time.realtimeSinceStartup;
 
         public void Start()
         {
@@ -96,7 +98,7 @@ namespace SyncUtil
             if (SyncNet.isServer)
             {
                 _conectionLatencyTable.Values.ToList().ForEach(d => d._recieved = false);
-                NetworkServer.SendToAll(CustomMsgType.Latency, new LatencyMessage() { serverTime = Network.time });
+                NetworkServer.SendToAll(CustomMsgType.Latency, new LatencyMessage() { serverTime = time });
 
 
 #if INCLUDE_UPDATE
@@ -131,7 +133,7 @@ namespace SyncUtil
                 _conectionLatencyTable[connectionId] = data = new Data();
             }
 
-            var latency = (float)(Network.time - lmsg.serverTime) * 0.5f;
+            var latency = (float)(time - lmsg.serverTime) * 0.5f;
             data.Add(latency);
             data._recieved = true;
         }

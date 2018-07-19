@@ -19,7 +19,10 @@ namespace SyncUtil
         #endregion
 
         double _offset;
-        public double time { get { return Network.time + _offset; } }
+
+        protected float realTime => Time.realtimeSinceStartup;
+
+        public double time => realTime + _offset;
 
         public void Start()
         {
@@ -28,7 +31,7 @@ namespace SyncUtil
 
             networkManager._OnServerConnect += (conn) =>
             {
-                NetworkServer.SendToClient(conn.connectionId, CustomMsgType.NetworkTime, new NetworkTimeMessage() { time = Network.time });
+                NetworkServer.SendToClient(conn.connectionId, CustomMsgType.NetworkTime, new NetworkTimeMessage() { time = realTime });
             };
 
 
@@ -38,7 +41,7 @@ namespace SyncUtil
                 {
                     client.RegisterHandler(CustomMsgType.NetworkTime, (msg) =>
                     {
-                        _offset = msg.ReadMessage<NetworkTimeMessage>().time - Network.time;
+                        _offset = msg.ReadMessage<NetworkTimeMessage>().time - realTime;
                     });
                 }
             };
