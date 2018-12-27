@@ -1,10 +1,17 @@
 # SyncUtil
 Sync Utilities For UNET  
   
-Use .NET 4.6  
-File -> Build Setting -> Player Settings...  
-Scripting Runtime Version: Experimental(.NET 4.6 Equivalent)  
-[Unity Package](https://github.com/fuqunaga/SyncUtil/raw/master/SyncUtil.unitypackage)
+
+# Install
+Download a `.unitypackage` file from [Release page](https://github.com/fuqunaga/SyncUtil/releases).
+
+or
+
+Using Pacakge Manager:  
+Add following line to the `dependencies` section in the `Packages/manifest.json`.
+```
+"ga.fuquna.syncutil": "https://github.com/fuqunaga/SyncUtil.git"
+```
 
 ## Syncing Parameters
 
