@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 
 namespace SyncUtil
 {
-    interface IInstanceRandom
+    public interface IInstanceRandom
     {
         CustomRandom rand { get; }
     }
