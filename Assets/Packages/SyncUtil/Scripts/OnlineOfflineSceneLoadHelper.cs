@@ -11,6 +11,8 @@ using UnityEngine.Assertions;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
+#pragma warning disable 0618
+
 namespace SyncUtil
 {
     [ExecuteInEditMode]

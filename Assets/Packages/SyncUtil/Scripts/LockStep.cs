@@ -7,6 +7,8 @@ using UnityEngine.Assertions;
 using UnityEngine.Networking;
 using UnityEngine.Networking.NetworkSystem;
 
+#pragma warning disable 0618
+
 namespace SyncUtil
 {
     public interface ILockStep

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Networking;
 
+#pragma warning disable 0618
 
 namespace SyncUtil
 {

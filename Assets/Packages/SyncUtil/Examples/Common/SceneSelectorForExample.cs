@@ -6,6 +6,8 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
 
+#pragma warning disable 0618
+
 namespace SyncUtil.Example
 {
     [ExecuteInEditMode]

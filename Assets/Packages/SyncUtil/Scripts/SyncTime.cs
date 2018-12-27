@@ -2,6 +2,8 @@
 using UnityEngine;
 using UnityEngine.Networking;
 
+#pragma warning disable 0618
+
 namespace SyncUtil
 {
     public class SyncTime : MonoBehaviour
