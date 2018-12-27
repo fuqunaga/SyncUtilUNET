@@ -57,11 +57,13 @@ namespace SyncUtil
             }
         }
 
+       WaitForEndOfFrame waitForEndOfFrame = new WaitForEndOfFrame();  // フレームの最後で_time更新
+
         IEnumerator UpdateTimeClient()
         {
             while (true)
             {
-                yield return new WaitForEndOfFrame();  // フレームの最後で_time更新
+                yield return waitForEndOfFrame;  // フレームの最後で_time更新
 
                 if (_lastMsg != null)
                 {
