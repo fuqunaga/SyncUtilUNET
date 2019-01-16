@@ -1,0 +1,10 @@
+{
+    "name": "ga.fuquna.syncutil",
+    "displayName": "SyncUtil",
+    "version": "1.0.0",
+    "unity": "2018.3",
+    "description": "Sync Utilities For UNET",
+    "keywords": ["Sync", "UNET"],
+    "category": "Network",
+    "dependencies": { }
+}
