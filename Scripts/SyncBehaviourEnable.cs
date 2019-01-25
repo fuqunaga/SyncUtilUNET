@@ -15,7 +15,7 @@ namespace SyncUtil
         }
     }
 
-    [ExecuteInEditMode]
+    [ExecuteAlways]
     public abstract class SyncObjectBool<T> : SyncObjectBool
         where T : Object
     {

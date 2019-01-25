@@ -10,7 +10,7 @@ using UnityEngine.Networking;
 
 namespace SyncUtil.Example
 {
-    [ExecuteInEditMode]
+    [ExecuteAlways]
     public class SceneSelectorForExample : MonoBehaviour
     {
 #if UNITY_EDITOR

@@ -15,7 +15,7 @@ using UnityEngine.SceneManagement;
 
 namespace SyncUtil
 {
-    [ExecuteInEditMode]
+    [ExecuteAlways]
     public class OnlineOfflineSceneLoadHelper : MonoBehaviour
     {
 #if UNITY_EDITOR

@@ -8,7 +8,7 @@ using UnityEngine.Networking;
 
 namespace SyncUtil
 {
-    [ExecuteInEditMode]
+    [ExecuteAlways]
     public class Spawner : MonoBehaviour
     {
         public List<NetworkIdentity> _prefabs = new List<NetworkIdentity>();
