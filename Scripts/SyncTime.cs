@@ -32,6 +32,11 @@ namespace SyncUtil
 
         public void Start()
         {
+			if(SyncNetworkManager.singleton == null)
+			{
+				Debug.LogWarning("SyncNetworkManager is not in scene");
+				return;
+			}
             SyncNetworkManager.singleton._OnStartClient += (client) =>
             {
                 if (SyncNet.isSlave)
