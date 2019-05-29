@@ -8,10 +8,10 @@ using UnityEditor.SceneManagement;
 
 using UnityEngine;
 using UnityEngine.Assertions;
-using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
+using Mirror;
 
-#pragma warning disable 0618
+
 
 namespace SyncUtil
 {

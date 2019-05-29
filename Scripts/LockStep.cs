@@ -4,10 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
-using UnityEngine.Networking;
-using UnityEngine.Networking.NetworkSystem;
-
-#pragma warning disable 0618
+using Mirror;
 
 namespace SyncUtil
 {
@@ -38,8 +35,8 @@ namespace SyncUtil
         int stepCountClient { get; }
     }
 
-
-    [NetworkSettings(sendInterval = 0f)]
+    //TODO: Interval
+    //[NetworkSettings(sendInterval = 0f)]
     public class LockStep : NetworkBehaviour, ILockStep
     {
         #region Overide 

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.Assertions;
-using UnityEngine.Networking;
+using Mirror;
 
-#pragma warning disable 0618
+
 
 namespace SyncUtil
 {
