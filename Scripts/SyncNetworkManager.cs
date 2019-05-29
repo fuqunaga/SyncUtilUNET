@@ -6,7 +6,7 @@ namespace SyncUtil
     [System.Serializable]
     public class SyncNetworkManager : NetworkManager
     {
-        public static new SyncNetworkManager singleton { get { return NetworkManager.singleton as SyncNetworkManager; } }
+        public static new SyncNetworkManager singleton => NetworkManager.singleton as SyncNetworkManager;
 
 
         #region Server side
@@ -37,26 +37,26 @@ namespace SyncUtil
 
         #region Client side
 
-        public event System.Action<NetworkClient> _OnStartClient = delegate { };
-        public override void OnStartClient(NetworkClient client)
+        public event System.Action onStartClient = delegate { };
+        public override void OnStartClient()
         {
-            base.OnStartClient(client);
-            _OnStartClient(client);
+            base.OnStartClient();
+            onStartClient();
         }
 
-        public event System.Action<NetworkConnection> _OnClientConnect = delegate { };
+        public event System.Action<NetworkConnection> onClientConnect = delegate { };
         public override void OnClientConnect(NetworkConnection conn)
         {
             base.OnClientConnect(conn);
-            _OnClientConnect(conn);
+            onClientConnect(conn);
         }
 
 
-        public event System.Action<NetworkConnection, int> _OnClientError = delegate { };
+        public event System.Action<NetworkConnection, int> onClientError = delegate { };
         public override void OnClientError(NetworkConnection conn, int errorCode)
         {
             base.OnClientError(conn, errorCode);
-            _OnClientError(conn, errorCode);
+            onClientError(conn, errorCode);
         }
         #endregion
     }

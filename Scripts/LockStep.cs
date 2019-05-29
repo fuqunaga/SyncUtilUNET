@@ -72,7 +72,7 @@ namespace SyncUtil
             public byte[] bytes;
         }
 
-        public class SyncDatas : SyncListStruct<Data> { }
+        public class SyncDatas : SyncList<Data> { }
 
         public struct InitData
         {
@@ -180,7 +180,7 @@ namespace SyncUtil
 
         byte[] MsgToByte(MessageBase msg)
         {
-            _writer.SeekZero();
+            _writer.Position = 0;
             _writer.Write(msg);
             return _writer.ToArray();
         }
@@ -271,13 +271,17 @@ namespace SyncUtil
             consistency = Consistency.NOT_CHECK_YET
         };
 
+        public class HashMessage : StringMessage { }
+
+        public class RequestHashMessage : IntegerMessage {}
+
 
         public override void OnStartServer()
         {
             base.OnStartServer();
-            NetworkServer.RegisterHandler(CustomMsgType.LockStepConsistency, (nmsg) =>
+            NetworkServer.RegisterHandler<HashMessage>((conn, msg) =>
             {
-                connectionIdToHash[nmsg.conn.connectionId] = nmsg.ReadMessage<StringMessage>().value;
+                connectionIdToHash[conn.connectionId] = msg.value;
             });
         }
 
@@ -296,7 +300,7 @@ namespace SyncUtil
             _lastConsistency.stepCount = checkStepCount;
             _lastConsistency.consistency = Consistency.CHECKING;
 
-            NetworkServer.SendToAll(CustomMsgType.LockStepConsistency, new IntegerMessage(checkStepCount));
+            NetworkServer.SendToAll(new RequestHashMessage() { value = checkStepCount });
             var time = Time.time;
 
             yield return new WaitUntil(() => ((Time.time - time) > timeOut) || isCompleteConnectionIdToHash);
@@ -318,9 +322,9 @@ namespace SyncUtil
         public override void OnStartClient()
         {
             base.OnStartClient();
-            NetworkManager.singleton.client.RegisterHandler(CustomMsgType.LockStepConsistency, (nmsg) =>
+            NetworkClient.RegisterHandler<RequestHashMessage>((conn, msg) =>
             {
-                _checkStepCount = nmsg.ReadMessage<IntegerMessage>().value;
+                _checkStepCount = msg.value;
             });
         }
 
@@ -328,7 +332,7 @@ namespace SyncUtil
         [Client]
         protected void ReturnCheckConsistency()
         {
-            NetworkManager.singleton.client.Send(CustomMsgType.LockStepConsistency, new StringMessage(_getHashFunc()));
+            NetworkClient.Send(new HashMessage() { value = _getHashFunc() });
         }
         #endregion
 

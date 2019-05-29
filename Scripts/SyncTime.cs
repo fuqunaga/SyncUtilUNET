@@ -2,8 +2,6 @@
 using UnityEngine;
 using Mirror;
 
-
-
 namespace SyncUtil
 {
     public class SyncTime : MonoBehaviour
@@ -32,13 +30,12 @@ namespace SyncUtil
 
         public void Start()
         {
-            SyncNetworkManager.singleton._OnStartClient += (client) =>
+            SyncNetworkManager.singleton.onStartClient += () =>
             {
                 if (SyncNet.isSlave)
                 {
-                    client.RegisterHandler(CustomMsgType.Time, (netMsg) =>
+                    NetworkClient.RegisterHandler<SyncTimeMessage>((conn, msg) =>
                     {
-                        var msg = netMsg.ReadMessage<SyncTimeMessage>();
                         if (_lastMsg == null || msg.time > _lastMsg.time)
                         {
                             _lastMsg = msg;
@@ -55,7 +52,7 @@ namespace SyncUtil
         {
             if (SyncNet.isServer)
             {
-                NetworkServer.SendToAll(CustomMsgType.Time, new SyncTimeMessage() { time = time, timeScale = Time.timeScale });
+                NetworkServer.SendToAll(new SyncTimeMessage() { time = time, timeScale = Time.timeScale });
             }
         }
 

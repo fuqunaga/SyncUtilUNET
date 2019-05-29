@@ -39,7 +39,9 @@ namespace SyncUtil.Example
             {
                 if (_stepEnable)
                 {
-                    var msg = reader.ReadMessage<Msg>();
+                    //var msg = reader.ReadMessage<Msg>();
+                    var msg = new Msg();
+                    msg.Deserialize(reader);
                     _lifeGame.Step(msg.data);
                 }
                 return _stepEnable;

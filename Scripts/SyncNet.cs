@@ -20,9 +20,6 @@ namespace SyncUtil
 
         public static bool isActive { get { var nm = NetworkManager.singleton; return (nm !=null) && nm.isNetworkActive; } }
 
-        public static NetworkClient client { get { var nm = NetworkManager.singleton; return (nm == null) ? null : nm.client; } }
-
-
         public static void Spawn(GameObject go)
         {
             if (isServer) NetworkServer.Spawn(go);
@@ -36,6 +33,6 @@ namespace SyncUtil
 
 
         public static float time { get { return SyncTime.Instance.time; } }
-        public static double networkTime { get { return SyncNetworkTime.Instance.time; } }
+        public static double networkTime => NetworkTime.time;
     }
 }

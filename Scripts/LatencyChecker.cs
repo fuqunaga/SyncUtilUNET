@@ -50,6 +50,7 @@ namespace SyncUtil
 
         public Dictionary<int, Data> _conectionLatencyTable = new Dictionary<int, Data>();
 
+#if false
 #if INCLUDE_UPDATE
         Dictionary<int, LatencyMessage> _conectionLatencyPool = new Dictionary<int, LatencyMessage>();
         LatencyMessage _lastMsg;
@@ -76,7 +77,7 @@ namespace SyncUtil
                 _conectionLatencyTable.Remove(conn.connectionId);
             };
 
-            SyncNetworkManager.singleton._OnStartClient += (client) =>
+            SyncNetworkManager.singleton.onStartClient += (client) =>
             {
                 if (SyncNet.isSlave)
                 {
@@ -122,7 +123,7 @@ namespace SyncUtil
                     _lastMsg = null;
                 }
             }
-#endif      
+#endif
         }
 
         void UpdateTable(int connectionId, LatencyMessage lmsg)
@@ -137,5 +138,7 @@ namespace SyncUtil
             data.Add(latency);
             data._recieved = true;
         }
+#endif
+
     }
 }

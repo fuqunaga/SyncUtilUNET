@@ -23,7 +23,6 @@ namespace SyncUtil
         #endregion
 
         public virtual string _networkAddress { get; } = "localhost";
-        public virtual int _networkPort { get; } = 7777;
         public virtual BootType _bootType { get; } = BootType.Manual;
         public virtual bool _autoConnect { get; } = true;
         public virtual float _autoConnectInterval { get; } = 10f;
@@ -49,8 +48,8 @@ namespace SyncUtil
             var mgr = _networkManager;
             switch (bootType)
             {
-                case BootType.Host: routine = StartConnectLoop(() => mgr.client != null, () => mgr.StartHost()); break;
-                case BootType.Client: routine = StartConnectLoop(() => mgr.client != null, StartClient); break;
+                case BootType.Host: routine = StartConnectLoop(() => NetworkClient.active, () => mgr.StartHost()); break;
+                case BootType.Client: routine = StartConnectLoop(() => NetworkClient.active, StartClient); break;
                 case BootType.Server: routine = StartConnectLoop(() => NetworkServer.active, () => mgr.StartServer()); break;
             }
 
@@ -59,8 +58,8 @@ namespace SyncUtil
 
         void StartClient()
         {
-            _networkManager._OnClientError -= OnClientError;
-            _networkManager._OnClientError += OnClientError;
+            _networkManager.onClientError -= OnClientError;
+            _networkManager.onClientError += OnClientError;
 
             _networkManager.StartClient();
         }
@@ -100,15 +99,6 @@ namespace SyncUtil
                     OnGUINetworkSetting();
 
                     var mgr = _networkManager;
-                    mgr.useSimulator = GUILayout.Toggle(mgr.useSimulator, "UseSimulator");
-                    if (mgr.useSimulator)
-                    {
-                        GUIUtil.Indent(() =>
-                        {
-                            mgr.simulatedLatency = GUIUtil.Slider(mgr.simulatedLatency, 1, 400, "Latency[msec]");
-                            mgr.packetLossPercentage = GUIUtil.Slider(mgr.packetLossPercentage, 0f, 20f, "PacketLoss[%]");
-                        });
-                    }
 
                     if (GUILayout.Button("Host")) { OnNetworkStartByManual(); StartNetwork(BootType.Host); }
                     if (GUILayout.Button("Client")) { OnNetworkStartByManual(); StartNetwork(BootType.Client); }
@@ -125,7 +115,6 @@ namespace SyncUtil
         protected void UpdateManager()
         {
             _networkManager.networkAddress = _networkAddress;
-            _networkManager.networkPort = _networkPort;
         }
 
         GUIUtil.Fold _fold;

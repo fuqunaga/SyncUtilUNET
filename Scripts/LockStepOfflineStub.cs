@@ -40,7 +40,7 @@ namespace SyncUtil
                         var initMsg = _getInitDataFunc();
                         var w = new NetworkWriter();
                         w.Write(initMsg);
-                        _initFunc(new NetworkReader(w));
+                        _initFunc(new NetworkReader(w.ToArray()));
                     }
 
                 }
@@ -49,7 +49,7 @@ namespace SyncUtil
 
                 var writer = new NetworkWriter();
                 writer.Write(msg);
-                if (_stepFunc(stepCount, new NetworkReader(writer)))
+                if (_stepFunc(stepCount, new NetworkReader(writer.ToArray())))
                 {
                     stepCount++;
                 }
