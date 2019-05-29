@@ -6,7 +6,6 @@ namespace SyncUtil.Example
     public class NetworkManagerControllerSample : NetworkManagerController
     {
         public string networkAddress = "localhost";
-        public int networkPort = 7777;
         public BootType bootType = BootType.Manual;
         public bool autoConnect = true;
         public float autoConnectInterval = 10f;
@@ -29,7 +28,6 @@ namespace SyncUtil.Example
             _sceneSelector.DebugMenu();
 
             networkAddress = GUIUtil.Field(networkAddress, "Host Address");
-            networkPort = GUIUtil.Field(networkPort, "Host Port");
             
             DebugMenuInternal();
         }

@@ -32,18 +32,25 @@ namespace SyncUtil
         {
             SyncNetworkManager.singleton.onStartClient += () =>
             {
-                if (SyncNet.isSlave)
+                if (SyncNet.isClient)
                 {
-                    NetworkClient.RegisterHandler<SyncTimeMessage>((conn, msg) =>
+                    if (SyncNet.isServer)
                     {
-                        if (_lastMsg == null || msg.time > _lastMsg.time)
+                        NetworkClient.RegisterHandler<SyncTimeMessage>((conn, msg) => { });
+                    }
+                    else
+                    {
+                        NetworkClient.RegisterHandler<SyncTimeMessage>((conn, msg) =>
                         {
-                            _lastMsg = msg;
-                        }
-                    });
+                            if (_lastMsg == null || msg.time > _lastMsg.time)
+                            {
+                                _lastMsg = msg;
+                            }
+                        });
 
-                    StopAllCoroutines();
-                    StartCoroutine(UpdateTimeClient());
+                        StopAllCoroutines();
+                        StartCoroutine(UpdateTimeClient());
+                    }
                 }
             };
         }
