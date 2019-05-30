@@ -1,5 +1,6 @@
 ﻿using Mirror;
-
+using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace SyncUtil
 {
@@ -8,28 +9,38 @@ namespace SyncUtil
     {
         public static new SyncNetworkManager singleton => NetworkManager.singleton as SyncNetworkManager;
 
+        public override void Awake()
+        {
+            base.Awake();
+
+            Assert.IsNotNull(playerPrefab, "playerPrefab == null. Mirror will not spawns scene objects.");
+            if ( !autoCreatePlayer)
+            {
+                Debug.LogWarning("autoCreatePlayer == false. Mirror spawns scene objects at AddPlayer. you must call ClientScene.AddPlayer() manually.");
+            }
+        }
 
         #region Server side
 
-        public event System.Action _OnStartServer = delegate { };
+        public event System.Action onStartServer = delegate { };
         public override void OnStartServer()
         {
             base.OnStartServer();
-            _OnStartServer();
+            onStartServer();
         }
 
-        public event System.Action<NetworkConnection> _OnServerConnect = delegate { };
+        public event System.Action<NetworkConnection> onServerConnect = delegate { };
         public override void OnServerConnect(NetworkConnection conn)
         {
             base.OnServerConnect(conn);
-            _OnServerConnect(conn);
+            onServerConnect(conn);
         }
 
-        public event System.Action<NetworkConnection> _OnServerDisconnect = delegate { };
+        public event System.Action<NetworkConnection> onServerDisconnect = delegate { };
         public override void OnServerDisconnect(NetworkConnection conn)
         {
             base.OnServerDisconnect(conn);
-            _OnServerDisconnect(conn);
+            onServerDisconnect(conn);
         }
 
         #endregion
