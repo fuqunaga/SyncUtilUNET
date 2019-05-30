@@ -5,15 +5,6 @@ Sync Utilities For UNET
 # Install
 Download a `.unitypackage` file from [Release page](https://github.com/fuqunaga/SyncUtil/releases).
 
-or
-
-Using Pacakge Manager:  
-Add following line to the `dependencies` section in the `Packages/manifest.json`.
-```
-"ga.fuquna.syncutil": "https://github.com/fuqunaga/SyncUtil.git"
-```
-
-
 ⚠To Open Example Scenes  
 Please add all the scenes to `Scenes In Build` at the Build Settings.
 
