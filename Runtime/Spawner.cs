@@ -2,24 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Networking;
-
-#pragma warning disable 0618
+using Mirror;
 
 namespace SyncUtil
 {
     [ExecuteAlways]
     public class Spawner : MonoBehaviour
     {
-        public List<NetworkIdentity> _prefabs = new List<NetworkIdentity>();
+        public List<NetworkIdentity> prefabs = new List<NetworkIdentity>();
 
 #if UNITY_EDITOR
         // Auto Regist to SpawnPrefabs on Editor
-        NetworkManager _networkManager;
+        NetworkManager networkManager;
         private void Update()
         {
-            var nm = _networkManager ?? (_networkManager = FindObjectOfType<NetworkManager>());
-            var diffGo = _prefabs.Where(ni => ni!=null).Select(ni => ni.gameObject).Except(nm.spawnPrefabs);
+            var nm = networkManager ?? (networkManager = FindObjectOfType<NetworkManager>());
+            var diffGo = prefabs.Where(ni => ni!=null).Select(ni => ni.gameObject).Except(nm.spawnPrefabs);
             nm.spawnPrefabs.AddRange(diffGo);
         }
 #endif
@@ -39,7 +37,7 @@ namespace SyncUtil
         {
             yield return new WaitUntil(() => NetworkServer.active);
 
-            _prefabs
+            prefabs
             .Select(p => Instantiate(p.gameObject))
             .ToList()
             .ForEach(go =>

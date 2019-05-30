@@ -1,8 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.Networking;
-
-#pragma warning disable 0618
+using Mirror;
 
 namespace SyncUtil
 {
@@ -32,21 +30,27 @@ namespace SyncUtil
 
         public void Start()
         {
-            SyncNetworkManager.singleton._OnStartClient += (client) =>
+            SyncNetworkManager.singleton.onStartClient += () =>
             {
-                if (SyncNet.isSlave)
+                if (SyncNet.isClient)
                 {
-                    client.RegisterHandler(CustomMsgType.Time, (netMsg) =>
+                    if (SyncNet.isServer)
                     {
-                        var msg = netMsg.ReadMessage<SyncTimeMessage>();
-                        if (_lastMsg == null || msg.time > _lastMsg.time)
+                        NetworkClient.RegisterHandler<SyncTimeMessage>((conn, msg) => { });
+                    }
+                    else
+                    {
+                        NetworkClient.RegisterHandler<SyncTimeMessage>((conn, msg) =>
                         {
-                            _lastMsg = msg;
-                        }
-                    });
+                            if (_lastMsg == null || msg.time > _lastMsg.time)
+                            {
+                                _lastMsg = msg;
+                            }
+                        });
 
-                    StopAllCoroutines();
-                    StartCoroutine(UpdateTimeClient());
+                        StopAllCoroutines();
+                        StartCoroutine(UpdateTimeClient());
+                    }
                 }
             };
         }
@@ -55,7 +59,7 @@ namespace SyncUtil
         {
             if (SyncNet.isServer)
             {
-                NetworkServer.SendToAll(CustomMsgType.Time, new SyncTimeMessage() { time = time, timeScale = Time.timeScale });
+                NetworkServer.SendToAll(new SyncTimeMessage() { time = time, timeScale = Time.timeScale });
             }
         }
 

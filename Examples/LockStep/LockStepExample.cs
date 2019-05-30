@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
-using UnityEngine.Networking;
-
-#pragma warning disable 0618
+using Mirror;
 
 namespace SyncUtil.Example
 {
@@ -43,7 +41,9 @@ namespace SyncUtil.Example
             {
                 if (_stepEnable)
                 {
-                    var msg = reader.ReadMessage<Msg>();
+                    //var msg = reader.ReadMessage<Msg>();
+                    var msg = new Msg();
+                    msg.Deserialize(reader);
                     Step(msg.force);
                 }
                 return _stepEnable;
