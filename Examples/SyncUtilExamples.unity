@@ -263,6 +263,7 @@ MonoBehaviour:
   - {fileID: 1087970129871348, guid: 922b63f130b1bf44a85995243a02ef26, type: 3}
   - {fileID: 1552606861858982, guid: 6349d1f70247b7d41b31016a5bc310c1, type: 3}
   - {fileID: 1475985329153236, guid: 2f5309d8516a3a7498fd8bcab44e154a, type: 3}
+  - {fileID: 1506407616398718, guid: fb059f27c16c79545a74652269b3d2ff, type: 3}
 --- !u!4 &645329940
 Transform:
   m_ObjectHideFlags: 0
@@ -392,7 +393,7 @@ MonoBehaviour:
   - {fileID: 102900000, guid: 69d81700c7826b948ad6e0d7f95623c0, type: 3}
   - {fileID: 102900000, guid: 5d7c27864394aa34cb6800d4165785f7, type: 3}
   - {fileID: 102900000, guid: c4f9706a825e8cc4ba8322101f897d1e, type: 3}
-  _idx: 2
+  _idx: 3
   _onlineSceneNames:
   - SyncParam
   - SyncBehaviourEnable,SyncGameObjectActive
