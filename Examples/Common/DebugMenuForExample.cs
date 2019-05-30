@@ -6,25 +6,25 @@ namespace SyncUtil.Example
     public class DebugMenuForExample : MonoBehaviour
     {
         #region singleton
-        static DebugMenuForExample _instance;
-        public static DebugMenuForExample Instance => (_instance != null ? _instance : (_instance = FindObjectOfType<DebugMenuForExample>()));
+        static DebugMenuForExample instance;
+        public static DebugMenuForExample Instance => (instance != null ? instance : (instance = FindObjectOfType<DebugMenuForExample>()));
         #endregion
 
-        NetworkManagerController _networkManagerController;
+        NetworkManagerController networkManagerController;
 
         public Action onGUI;
 
 
         void Start()
         {
-            _networkManagerController = FindObjectOfType<NetworkManagerController>();
+            networkManagerController = FindObjectOfType<NetworkManagerController>();
         }
 
         private void OnGUI()
         {
             if (SyncNet.isActive)
             {
-                _networkManagerController.DebugMenu();
+                networkManagerController.DebugMenu();
 
                 onGUI?.Invoke();
             }
