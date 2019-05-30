@@ -223,7 +223,6 @@ GameObject:
   - component: {fileID: 645329939}
   - component: {fileID: 645329941}
   - component: {fileID: 645329942}
-  - component: {fileID: 645329943}
   - component: {fileID: 645329945}
   - component: {fileID: 645329944}
   m_Layer: 0
@@ -251,7 +250,7 @@ MonoBehaviour:
   serverTickRate: 30
   showDebugMessages: 0
   offlineScene: Offline
-  onlineScene: 
+  onlineScene: PreRendering
   transport: {fileID: 645329944}
   networkAddress: localhost
   maxConnections: 4
@@ -277,7 +276,7 @@ Transform:
   m_Children:
   - {fileID: 1406493532}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &645329941
 MonoBehaviour:
@@ -305,18 +304,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6029163917ed01d4e905ab9d5d59892c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &645329943
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 645329938}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9102b09670c03d04ba5a69c2a2dc41f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &645329944
@@ -393,7 +380,7 @@ MonoBehaviour:
   - {fileID: 102900000, guid: 69d81700c7826b948ad6e0d7f95623c0, type: 3}
   - {fileID: 102900000, guid: 5d7c27864394aa34cb6800d4165785f7, type: 3}
   - {fileID: 102900000, guid: c4f9706a825e8cc4ba8322101f897d1e, type: 3}
-  _idx: 3
+  _idx: 4
   _onlineSceneNames:
   - SyncParam
   - SyncBehaviourEnable,SyncGameObjectActive
@@ -564,5 +551,5 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

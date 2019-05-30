@@ -7,8 +7,8 @@ namespace SyncUtil.Example
 {
     public class PreRenderingDebugMenu : MonoBehaviour
     {
-        PreRenderingWithLatencyCheckerSample _preRendering;
-        LatencyCheckerLine _laytencyCheckerLine;
+        PreRendering preRendering;
+        LatencyCheckerLine laytencyCheckerLine;
 
 
         private void OnEnable()
@@ -23,9 +23,9 @@ namespace SyncUtil.Example
 
         void Start()
         {
-            _preRendering = FindObjectOfType<PreRenderingWithLatencyCheckerSample>();
+            preRendering = FindObjectOfType<PreRendering>();
 
-            _laytencyCheckerLine = FindObjectOfType<LatencyCheckerLine>();
+            laytencyCheckerLine = FindObjectOfType<LatencyCheckerLine>();
             StartCoroutine(SetLaytencyCheckerLineEnable());
         }
 
@@ -33,15 +33,31 @@ namespace SyncUtil.Example
         IEnumerator SetLaytencyCheckerLineEnable()
         {
             yield return new WaitForEndOfFrame();
-            _laytencyCheckerLine.Datas.ForEach(data => data.enable = true);
+            laytencyCheckerLine.Datas.ForEach(data => data.enable = true);
 
         }
 
         // Update is called once per frame
         void DebugMenu()
         {
-            _preRendering.DebugMenu();
-            _laytencyCheckerLine.DebugMenu();
+            PrerenderingDebugMenu();
+            laytencyCheckerLine.DebugMenu();
+        }
+
+        void PrerenderingDebugMenu()
+        {
+            preRendering.enabled = GUILayout.Toggle(preRendering.enabled, "PreRendering");
+
+            var enable = preRendering.enabled;
+            if (enable)
+            {
+                GUIUtil.Indent(() =>
+                {
+                    var data = preRendering.data;
+                    data.passthrough = GUILayout.Toggle(data.passthrough, "PassThrough");
+                    data.delay = GUIUtil.Slider(data.delay, "Delay");
+                });
+            }
         }
     }
 }
