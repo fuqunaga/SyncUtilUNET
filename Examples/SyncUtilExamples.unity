@@ -251,7 +251,7 @@ MonoBehaviour:
   serverTickRate: 30
   showDebugMessages: 0
   offlineScene: Offline
-  onlineScene: SyncParam
+  onlineScene: 
   transport: {fileID: 645329944}
   networkAddress: localhost
   maxConnections: 4
@@ -392,7 +392,7 @@ MonoBehaviour:
   - {fileID: 102900000, guid: 69d81700c7826b948ad6e0d7f95623c0, type: 3}
   - {fileID: 102900000, guid: 5d7c27864394aa34cb6800d4165785f7, type: 3}
   - {fileID: 102900000, guid: c4f9706a825e8cc4ba8322101f897d1e, type: 3}
-  _idx: 0
+  _idx: 2
   _onlineSceneNames:
   - SyncParam
   - SyncBehaviourEnable,SyncGameObjectActive
