@@ -35,8 +35,6 @@ namespace SyncUtil
         int stepCountClient { get; }
     }
 
-    //TODO: Interval
-    //[NetworkSettings(sendInterval = 0f)]
     public class LockStep : NetworkBehaviour, ILockStep
     {
         #region Overide 
@@ -98,7 +96,10 @@ namespace SyncUtil
         [SyncVar]
         InitData _initData = new InitData();
 
-
+        private void Awake()
+        {
+            syncInterval = 0f;
+        }
 
         protected void Start()
         {

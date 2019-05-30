@@ -48,8 +48,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   serverOnly: 0
   localPlayerAuthority: 0
-  m_AssetId: 6349d1f70247b7d41b31016a5bc310c1
-  m_SceneId: 0
+  m_AssetId: 
+  m_SceneId: 4079459476
 --- !u!114 &114812573819865026
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62,7 +62,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f3a6c1cabd282a4f855b8e6179aafb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncInterval: 0.1
+  syncInterval: 0
   _dataNumMax: 10000
   _stepNumMaxPerFrame: 10
 --- !u!114 &114629792408392470
