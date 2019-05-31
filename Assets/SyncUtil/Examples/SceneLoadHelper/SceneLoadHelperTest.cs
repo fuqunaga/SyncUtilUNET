@@ -2,10 +2,7 @@
 
 namespace SyncUtil.Example
 {
-    /// <summary>
-    /// this logs will not be called when it is in online/offline scene
-    /// </summary>
-    public class UnloadOnlineOfflineScenesTest : MonoBehaviour
+    public class SceneLoadHelperTest : MonoBehaviour
     {
         string sceneName { get { return gameObject.scene.name; } }
 

@@ -16,7 +16,11 @@ namespace SyncUtil.Example
 
         private void OnDisable()
         {
-            DebugMenuForExample.Instance.onGUI -= DebugMenu;
+            var menu = DebugMenuForExample.Instance;
+            if (menu != null)
+            {
+                menu.onGUI -= DebugMenu;
+            }
         }
 
         public void DebugMenu()

@@ -15,8 +15,14 @@ EditorBuildSettings:
     path: Assets/SyncUtil/Examples/SyncParam/SyncParam.unity
     guid: e6b021ddd1437804d884f68c8f1ff0f6
   - enabled: 1
+    path: Assets/SyncUtil/Examples/SyncParam/SyncParamCore.unity
+    guid: 74049934e63fd034c873dca40071f3a8
+  - enabled: 1
     path: Assets/SyncUtil/Examples/SyncBehaviourEnable,SyncGameObjectActive/SyncBehaviourEnable,SyncGameObjectActive.unity
     guid: bb61093fc25965247973d8306acc5f7b
+  - enabled: 1
+    path: Assets/SyncUtil/Examples/SyncBehaviourEnable,SyncGameObjectActive/SyncBehaviourEnable,SyncGameObjectActiveCore.unity
+    guid: 164f8dc160a513e438a4acef601d62b2
   - enabled: 1
     path: Assets/SyncUtil/Examples/Spawner,ServerOrStandAlone/Spawner,ServerOrStandAlone.unity
     guid: 2d6f7bda8f5661545bd19ad02e978a1e
@@ -32,4 +38,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/SyncUtil/Examples/LockStep/LockStepGPU.unity
     guid: c4f9706a825e8cc4ba8322101f897d1e
+  - enabled: 1
+    path: Assets/SyncUtil/Examples/SceneLoadHelper/Scene(will unloaded when play).unity
+    guid: 8c3534822095b3d419791047e2091be7
   m_configObjects: {}
