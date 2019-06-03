@@ -1,3 +1,15 @@
-﻿{
-	"name": "SyncUtil"
+{
+    "name": "SyncUtil",
+    "references": [
+        "com.unity.multiplayer-hlapi.Runtime"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
 }
