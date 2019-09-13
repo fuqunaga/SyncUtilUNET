@@ -67,15 +67,16 @@ namespace SyncUtil
         SyncListKeyVector4 _syncListKeyVector4 = new SyncListKeyVector4();
         #endregion
 
-        Dictionary<Type, ISyncListKeyObj> _typeToSyncList;
-        Dictionary<string, TypeAndIdx> _keyToTypeIdx = new Dictionary<string, TypeAndIdx>();
+        Dictionary<Type, ISyncListKeyObj> typeToSyncList;
+        Dictionary<string, TypeAndIdx> keyToTypeIdx = new Dictionary<string, TypeAndIdx>();
 
-        HashSet<string> _triggerdKey = new HashSet<string>();
+        HashSet<string> triggerdKey = new HashSet<string>();
 
+        public bool IsTypeSupported(Type type) => typeToSyncList.ContainsKey(type) || type.IsEnum;
 
         public void Awake()
         {
-            _typeToSyncList = new Dictionary<Type, ISyncListKeyObj>()
+            typeToSyncList = new Dictionary<Type, ISyncListKeyObj>()
             {
                 { typeof(bool),    _syncListKeyBool    },
                 { typeof(int),     _syncListKeyInt     },
@@ -98,11 +99,11 @@ namespace SyncUtil
         {
             base.OnStartClient();
 
-            _syncListKeyBool.Callback += (op, idx) => { _triggerdKey.Add(_syncListKeyBool.Get(idx).key); };
-            _typeToSyncList.Values.ToList().ForEach(list =>
+            _syncListKeyBool.Callback += (op, idx) => { triggerdKey.Add(_syncListKeyBool.Get(idx).key); };
+            typeToSyncList.Values.ToList().ForEach(list =>
             {
                 list.SetCallback((op, idx) => {
-                    _triggerdKey.Add(list.Get(idx).key);
+                    triggerdKey.Add(list.Get(idx).key);
                 });
             });
         }
@@ -118,21 +119,20 @@ namespace SyncUtil
                 val = Convert.ChangeType(val, type);
             }
 
-            TypeAndIdx ti;
-            if (_keyToTypeIdx.TryGetValue(key, out ti))
+            if (keyToTypeIdx.TryGetValue(key, out var ti))
             {
-                var iSynList = _typeToSyncList[type];
+                var iSynList = typeToSyncList[type];
                 iSynList.Set(ti.idx, val);
             }
             else {
-                if (_typeToSyncList != null)
+                if (typeToSyncList != null)
                 {
-                    Assert.IsTrue(_typeToSyncList.ContainsKey(type), string.Format("type [{0}] is not supported.", type));
+                    Assert.IsTrue(typeToSyncList.ContainsKey(type), string.Format("type [{0}] is not supported.", type));
 
-                    var iSynList = _typeToSyncList[type];
+                    var iSynList = typeToSyncList[type];
                     var idx = iSynList.Count;
                     iSynList.Add(key, val);
-                    _keyToTypeIdx[key] = new TypeAndIdx() { type = type, idx = idx };
+                    keyToTypeIdx[key] = new TypeAndIdx() { type = type, idx = idx };
                 }
             }
         }
@@ -140,11 +140,11 @@ namespace SyncUtil
 
         public object GetParam(string key, bool triggeredOnly = false)
         {
-            if (!triggeredOnly || _triggerdKey.Contains(key))
+            if (!triggeredOnly || triggerdKey.Contains(key))
             {
-                _triggerdKey.Remove(key);
+                triggerdKey.Remove(key);
                 
-                var allList = _typeToSyncList.Values.ToList();
+                var allList = typeToSyncList.Values.ToList();
                 for (var iList = 0; iList < allList.Count; ++iList)
                 {
                     var list = allList[iList];

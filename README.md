@@ -17,6 +17,11 @@ Add following line to the `dependencies` section in the `Packages/manifest.json`
 ⚠To Open Example Scenes  
 Please add all the scenes to `Scenes In Build` at the Build Settings.
 
+# How to run Examples
+
+1. Add all scene files(*.unity) to Scenes In Build of Build Settings.
+1. Open and run SyncUtilExamples scene. this is a example scene launcher.
+
 ## Syncing Parameters
 
 ### Primitive Members

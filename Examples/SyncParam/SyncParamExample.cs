@@ -1,18 +1,39 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace SyncUtil.Example
 {
-
     public class SyncParamExample : MonoBehaviour
     {
-        public bool _bool;
-        public int _int;
-        public uint _uint;
-        public float _float;
-        public string _string;
-        public Vector2 _vector2;
-        public Vector3 _vector3;
-        public Vector4 _vector4;
+        #region Type Define
+
+        public enum MyEnum
+        {
+            One,
+            Two,
+            Three
+        }
+
+        [Serializable]
+        public class MyClass
+        {
+            public int intVal;
+            public float floatVal;
+        }
+
+        #endregion
+
+        public MyEnum enumVal;
+        public bool boolVal;
+        public int intVal;
+        public uint uintVal;
+        public float floatVal;
+        public string stringVal;
+        public Vector2 vector2Val;
+        public Vector3 vector3Val;
+        public Vector4 vector4Val;
+
+        public MyClass classVal;
 
         private void OnEnable()
         {
@@ -33,14 +54,17 @@ namespace SyncUtil.Example
             GUILayout.Label("SyncParamExample");
             GUIUtil.Indent(() =>
             {
-                _bool = GUIUtil.Field(_bool, "bool");
-                _int = GUIUtil.Field(_int, "int");
-                _uint = GUIUtil.Field(_uint, "uint");
-                _float = GUIUtil.Field(_float, "float");
-                _string = GUIUtil.Field(_string, "string");
-                _vector2 = GUIUtil.Field(_vector2, "vector2");
-                _vector3 = GUIUtil.Field(_vector3, "vector3");
-                _vector4 = GUIUtil.Field(_vector4, "vector4");
+                enumVal = GUIUtil.Field(enumVal, nameof(enumVal));
+                boolVal = GUIUtil.Field(boolVal, nameof(boolVal));
+                intVal = GUIUtil.Field(intVal, nameof(intVal));
+                uintVal = GUIUtil.Field(uintVal, nameof(uintVal));
+                floatVal = GUIUtil.Field(floatVal, nameof(floatVal));
+                stringVal = GUIUtil.Field(stringVal, nameof(stringVal));
+                vector2Val = GUIUtil.Field(vector2Val, nameof(vector2Val));
+                vector3Val = GUIUtil.Field(vector3Val, nameof(vector3Val));
+                vector4Val = GUIUtil.Field(vector4Val, nameof(vector4Val));
+                classVal.intVal = GUIUtil.Field(classVal.intVal, nameof(classVal) + ".intVal");
+                classVal.floatVal = GUIUtil.Field(classVal.floatVal, nameof(classVal) + ".floatVal");
             });
         }
     }

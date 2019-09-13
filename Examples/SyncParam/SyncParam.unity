@@ -347,14 +347,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3db1fb3b66b9881418a2a0153b34c04a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bool: 0
-  _int: 0
-  _uint: 0
-  _float: 0
-  _string: string
-  _vector2: {x: 0, y: 0}
-  _vector3: {x: 0, y: 0, z: 0}
-  _vector4: {x: 0, y: 0, z: 0, w: 0}
+  enumVal: 0
+  boolVal: 0
+  intVal: 0
+  uintVal: 0
+  floatVal: 0
+  stringVal: 
+  vector2Val: {x: 0, y: 0}
+  vector3Val: {x: 0, y: 0, z: 0}
+  vector4Val: {x: 0, y: 0, z: 0, w: 0}
+  classVal:
+    intVal: 0
+    floatVal: 0
 --- !u!114 &1250200202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -367,23 +371,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b47a21350bdee40ae46e8f1d98295c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _target: {fileID: 1250200201}
-  _fields:
-  - name: _bool
+  target: {fileID: 1250200201}
+  fields:
+  - name: enumVal
     mode: 1
-  - name: _int
+  - name: boolVal
+    mode: 1
+  - name: intVal
     mode: 0
-  - name: _uint
+  - name: uintVal
     mode: 0
-  - name: _float
+  - name: floatVal
     mode: 0
-  - name: _string
+  - name: stringVal
     mode: 0
-  - name: _vector2
+  - name: vector2Val
     mode: 0
-  - name: _vector3
+  - name: vector3Val
     mode: 0
-  - name: _vector4
+  - name: vector4Val
+    mode: 0
+  - name: classVal
     mode: 0
 --- !u!1 &1692774345
 GameObject:

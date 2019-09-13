@@ -2,6 +2,7 @@
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Serialization;
 
 namespace SyncUtil
 {
@@ -14,12 +15,14 @@ namespace SyncUtil
         }
 
 
-        public Object _target;
-        public List<FieldData> _fields = new List<FieldData>();
+        public Object target;
+
+        [FormerlySerializedAs("_fields")]
+        public List<FieldData> fields = new List<FieldData>();
 
         public void Start()
         {
-            _fields.ForEach(field => field.Init(_target));
+            fields.ForEach(field => field.Init(target));
         }
 
         void Update()
@@ -29,20 +32,20 @@ namespace SyncUtil
             {
                 if (SyncNet.isServer)
                 {
-                    _fields.ForEach(field =>
+                    fields.ForEach(field =>
                     {
-                        mgr.UpdateParam(field.key, field.GetValue(_target));
+                        mgr.UpdateParam(field.key, field.GetValue(target));
                     });
                 }
 
                 if (SyncNet.isSlave)
                 {
-                    _fields.ForEach(field =>
+                    fields.ForEach(field =>
                     {
                         var obj = mgr.GetParam(field.key, field.mode == Mode.Trigger);
                         if (obj != null)
                         {
-                            field.SetValue(_target, obj);
+                            field.SetValue(target, obj);
                         }
                     });
                 }
@@ -56,25 +59,44 @@ namespace SyncUtil
             public string name;
             public Mode mode;
 
-            public string key { get { return _key; } }
-            string _key;
-            FieldInfo _fieldInfo;
+            public string key { get; protected set; }
+            FieldInfo fieldInfo;
+
+            bool? needSerialize_;
+            bool needSerialize => needSerialize_ ?? (needSerialize_ = !SyncParamManager.instance.IsTypeSupported(fieldInfo.FieldType)).Value;
 
             public void Init(Object target)
             {
-                _key = target.name + "/" + name; // TODO: case _target object has multi instance
+                key = target.name + "/" + name; // TODO: case _target object has multi instance
 
                 var t = target.GetType();
-                while (t != null && _fieldInfo == null)
+                while (t != null && fieldInfo == null)
                 {
-                    _fieldInfo = t.GetField(name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                    fieldInfo = t.GetField(name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
                     t = t.BaseType;
                 }
-                Assert.IsNotNull(_fieldInfo, "Can't get field. [" + target.GetType() + "." + name + "]");
+                Assert.IsNotNull(fieldInfo, "Can't get field. [" + target.GetType() + "." + name + "]");
             }
 
-            public object GetValue(Object target) { return _fieldInfo.GetValue(target); }
-            public void SetValue(Object target, object value) { _fieldInfo.SetValue(target, value); }
+            public object GetValue(Object target)
+            {
+                var ret = fieldInfo.GetValue(target);
+                if ( needSerialize )
+                {
+                    ret = JsonUtility.ToJson(ret);
+                }
+
+                return ret;
+            }
+
+            public void SetValue(Object target, object value)
+            {
+                if (needSerialize)
+                {
+                    value = JsonUtility.FromJson(value as string, fieldInfo.FieldType);
+                }
+                fieldInfo.SetValue(target, value);
+            }
         }
 
 
