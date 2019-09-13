@@ -14,7 +14,7 @@ namespace SyncUtil
             Trigger
         }
 
-
+        [FormerlySerializedAs("_target")]
         public Object target;
 
         [FormerlySerializedAs("_fields")]
