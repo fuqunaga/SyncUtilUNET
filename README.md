@@ -13,13 +13,9 @@ Add following line to the `dependencies` section in the `Packages/manifest.json`
 "ga.fuquna.syncutil": "https://github.com/fuqunaga/SyncUtil.git"
 ```
 
-
-⚠To Open Example Scenes  
-Please add all the scenes to `Scenes In Build` at the Build Settings.
-
 ## How to run Examples
 
-1. Add all scene files(*.unity) to Scenes In Build of Build Settings.
+1. Add all scene files(*.unity) to `Scenes In Build` of Build Settings.
 1. Open and run SyncUtilExamples scene. this is a example scene launcher.
 
 ## Syncing Parameters
@@ -39,7 +35,7 @@ auto regist spawnable prefab
   
 [![](http://img.youtube.com/vi/2qMK0PuPIHY/0.jpg)](https://www.youtube.com/watch?v=2qMK0PuPIHY)  
 Spawner: spawn prefabs  
-ServerOrStandAlone: disable chilren on client  
+ServerOrStandAlone: disable children on client  
   
 ## Scene Load Helper
 [![](http://img.youtube.com/vi/RQmx5Dr5_MQ/0.jpg)](https://www.youtube.com/watch?v=RQmx5Dr5_MQ)  
