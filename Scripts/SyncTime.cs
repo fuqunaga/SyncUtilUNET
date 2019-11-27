@@ -37,10 +37,13 @@ namespace SyncUtil
 				Debug.LogWarning("SyncNetworkManager is not in scene");
 				return;
 			}
+			// when a client starts
             SyncNetworkManager.singleton._OnStartClient += (client) =>
             {
+				// if it is a slave
                 if (SyncNet.isSlave)
                 {
+					// register a network handler function that caches the last time msg recieved
                     client.RegisterHandler(CustomMsgType.Time, (netMsg) =>
                     {
                         var msg = netMsg.ReadMessage<SyncTimeMessage>();
@@ -50,6 +53,7 @@ namespace SyncUtil
                         }
                     });
 
+					// start coroutine that will proces recieved network message
                     StopAllCoroutines();
                     StartCoroutine(UpdateTimeClient());
                 }
