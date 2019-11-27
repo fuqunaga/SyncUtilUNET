@@ -6,6 +6,7 @@ using UnityEngine;
 namespace SyncUtil
 {
     [System.Serializable]
+
     public class SyncNetworkManager : NetworkManager
     {
         public static new SyncNetworkManager singleton { get { return NetworkManager.singleton as SyncNetworkManager; } }
@@ -42,7 +43,7 @@ namespace SyncUtil
         public event System.Action<NetworkClient> _OnStartClient = delegate { };
         public override void OnStartClient(NetworkClient client)
         {
-			Debug.LogFormat("{0} Client networking logic is starting", System.DateTime.Now.TimeOfDay);
+			Debug.LogFormat("{0} Client networking logic is starting", System.DateTime.Now);
             base.OnStartClient(client);
             _OnStartClient(client);
         }
@@ -50,7 +51,7 @@ namespace SyncUtil
         public event System.Action<NetworkConnection> _OnClientConnect = delegate { };
         public override void OnClientConnect(NetworkConnection conn)
         {
-			Debug.LogFormat("{0} Client connection ID: {1}  has connected to the server", System.DateTime.Now.TimeOfDay, conn.connectionId);
+			Debug.LogFormat("{0} Client connection ID: {1}  has connected to the server", System.DateTime.Now, conn.connectionId);
             base.OnClientConnect(conn);
             _OnClientConnect(conn);
         }
@@ -59,14 +60,14 @@ namespace SyncUtil
         public event System.Action<NetworkConnection, int> _OnClientError = delegate { };
         public override void OnClientError(NetworkConnection conn, int errorCode)
         {
-			Debug.LogErrorFormat("{0} Client Error: connection ID: {1}  error code: {2} error message: {3} ",System.DateTime.Now.TimeOfDay, conn.connectionId, errorCode, NetworkErrorToString(errorCode));
+			Debug.LogErrorFormat("{0} Client Error: connection ID: {1}  error code: {2} error message: {3} ",System.DateTime.Now, conn.connectionId, errorCode, NetworkErrorToString(errorCode));
             base.OnClientError(conn, errorCode);
             _OnClientError(conn, errorCode);
         }
 
 		public override void OnClientDisconnect(NetworkConnection conn)
 		{
-			Debug.LogWarningFormat("{0} Client Disconeect  connection ID {1}", System.DateTime.Now.TimeOfDay, conn.connectionId);
+			Debug.LogWarningFormat("{0} Client Disconeect  connection ID {1}", System.DateTime.Now, conn.connectionId);
 			base.OnClientDisconnect(conn);
 		}
 		#endregion
