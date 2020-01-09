@@ -2,7 +2,11 @@
 Sync Utilities For UNET  
   
 
+## Install Dependencies
+ - [UNet(Multplayer HLAPI)](https://docs.unity3d.com/Manual/UNetUsingHLAPI.html) via PakcageManager.
+
 ## Install
+
 Download a `.unitypackage` file from [Release page](https://github.com/fuqunaga/SyncUtil/releases).
 
 or
@@ -48,10 +52,8 @@ dynamic delay rendering according to network latency
 ## LockStep, LockStepGPU
 [![](http://img.youtube.com/vi/NmddY56bRPk/0.jpg)](https://www.youtube.com/watch?v=NmddY56bRPk)  
 
-# Recommend
-https://github.com/nobnak/SyncTransform  
-https://github.com/fuqunaga/PrefsGUI/blob/master/README.md#syncoverunet
 
 # Reference
-PreRendering
-https://github.com/nobnak/Gist/blob/master/PreRendering.cs
+ - https://github.com/fuqunaga/PrefsGUISyncUNET
+ - https://github.com/nobnak/SyncTransform  
+ - https://github.com/nobnak/Gist/blob/master/PreRendering.cs
