@@ -24,7 +24,7 @@ namespace SyncUtil
         #region Optional
 
         Func<MessageBase> getInitDataFunc { set; }
-        Func<NetworkReader, bool> initFunc { set; }
+        Func<NetworkReader, bool> initFunc { set; } // if return false, skip current step and call initFunc at next frame.
         Func<bool> onMissingCatchUpServer { set; } // if return true, StopHost() will be called.
         Action onMissingCatchUpClient { set; }
         Func<string> getHashFunc { set; } // for CheckConsistency
@@ -189,42 +189,58 @@ namespace SyncUtil
         }
 
 
-        bool firstStep = true;
+        bool initialized;
+
+
+        //static List<Data> currentDatas = new List<Data>();
 
         void Step()
         {
-            if (_datas.Any() && _stepFunc != null)
-            {
-                var currentDatas = _datas.Reverse().Where(d => d.stepCount >= stepCountClient).Reverse().Take(_stepNumMaxPerFrame);
-                if (currentDatas.Any())
-                {
-                    var firstStepCount = currentDatas.First().stepCount;
-                    if (firstStepCount > stepCountClient)
-                    {
-                        Debug.LogWarning($"Wrong step count Expected[{stepCountClient}], min data's[{firstStepCount}]");
-                        _onMissingCatchUpClient?.Invoke();
-                    }
-                    else
-                    {
-                        if (firstStep)
-                        {
-                            if (_initFunc != null)
-                            {
-                                if (!_initData.sended)
-                                {
-                                    // InitData is NOT reach to this client yet
-                                    return;
-                                }
-                                firstStep = !_initFunc(new NetworkReader(_initData.bytes));
-                            }
-                            else
-                            {
-                                firstStep = false;
-                            }
-                        }
+            if (!_datas.Any() || _stepFunc == null) return;
 
-                        currentDatas.ToList().ForEach(data =>
+            var idx = _datas.Count-1;
+            for (; idx>=0; --idx)
+            {
+                var step = _datas[idx].stepCount;
+                if ( step == stepCountClient) break;
+                if (step < stepCountClient) return;
+            }
+
+            if ( idx>=0 )
+            { 
+                var firstStepCount = _datas[idx].stepCount;
+                if (firstStepCount > stepCountClient)
+                {
+                    Debug.LogWarning($"Wrong step count Expected[{stepCountClient}], min data's[{firstStepCount}]");
+                    _onMissingCatchUpClient?.Invoke();
+                }
+                else
+                {
+                    if (!initialized)
+                    {
+                        if (_initFunc != null)
                         {
+                            if (!_initData.sended)
+                            {
+                                // InitData is NOT reach to this client yet
+                                return;
+                            }
+                            initialized = _initFunc(new NetworkReader(_initData.bytes));
+                        }
+                        else
+                        {
+                            initialized = true;
+                        }
+                    }
+
+                    if (initialized)
+                    {
+                        var limit = Mathf.Min(idx + _stepNumMaxPerFrame, _datas.Count);
+                        for (; idx < limit; idx++)
+                        {
+                            var data = _datas[idx];
+                            Assert.IsTrue(stepCountClient == data.stepCount, $"stepCountClient[{stepCountClient}] data.stepCount[{data.stepCount}]");
+                            
                             var isStepEnable = _stepFunc(data.stepCount, new NetworkReader(data.bytes));
                             if (isStepEnable)
                             {
@@ -239,7 +255,7 @@ namespace SyncUtil
                                 }
                                 ++stepCountClient;
                             }
-                        });
+                        }
                     }
                 }
             }
