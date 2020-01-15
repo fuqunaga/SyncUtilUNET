@@ -95,25 +95,33 @@ namespace SyncUtil
             {
                 GUILayout.Label("SyncUtil Manual Boot");
 
-                GUIUtil.Indent(() =>
+                //GUIUtil.Indent(() =>
                 {
-                    OnGUINetworkSetting();
-
                     var mgr = _networkManager;
-                    mgr.useSimulator = GUILayout.Toggle(mgr.useSimulator, "UseSimulator");
+
+
+					OnGUINetworkSetting();
+					GUILayout.Label("Boot Type (Manual. once only):");
+                    if (GUILayout.Button("Host (client & server)")) { OnNetworkStartByManual(); StartNetwork(BootType.Host); }
+                    if (GUILayout.Button("Client")) { OnNetworkStartByManual(); StartNetwork(BootType.Client); }
+                    if (GUILayout.Button("Server"))
+                    {
+                        OnNetworkStartByManual();
+                        StartNetwork(BootType.Server);
+                    }
+
+                    GUILayout.Label("");
+                    mgr.useSimulator = GUILayout.Toggle(mgr.useSimulator, "Use Network Simulator");
                     if (mgr.useSimulator)
                     {
-                        GUIUtil.Indent(() =>
+                        //GUIUtil.Indent(() =>
                         {
                             mgr.simulatedLatency = GUIUtil.Slider(mgr.simulatedLatency, 1, 400, "Latency[msec]");
                             mgr.packetLossPercentage = GUIUtil.Slider(mgr.packetLossPercentage, 0f, 20f, "PacketLoss[%]");
-                        });
+                            GUILayout.Label("");
+                        }//);
                     }
-
-                    if (GUILayout.Button("Host")) { OnNetworkStartByManual(); StartNetwork(BootType.Host); }
-                    if (GUILayout.Button("Client")) { OnNetworkStartByManual(); StartNetwork(BootType.Client); }
-                    if (GUILayout.Button("Server")) { OnNetworkStartByManual(); StartNetwork(BootType.Server); }
-                });
+                }//);
             }
         }
 
