@@ -38,7 +38,7 @@ namespace SyncUtil
 				return;
 			}
 			// when a client starts
-            SyncNetworkManager.singleton._OnStartClient += (client) =>
+            SyncNetworkManager.singleton.onStartClient += (client) =>
             {
 				// if it is a slave
                 if (SyncNet.isSlave)
@@ -60,7 +60,7 @@ namespace SyncUtil
             };
             // in case the server restarts, when the client next connects the server, make sure the client's last message is reset to null, 
             // otherwise in a rare case when the server app restarts, the server's lastMsg.time will be less than the client's lastMsg.time and time chnages on the server will not sync properly on the client.
-            SyncNetworkManager.singleton._OnClientConnect += (networkConn) =>
+            SyncNetworkManager.singleton.onClientConnect += (networkConn) =>
             {
                 _lastMsg = null;
             };

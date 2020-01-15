@@ -106,7 +106,7 @@ namespace SyncUtil
         protected void Start()
         {
             var nm = SyncNetworkManager.singleton;
-            nm._OnServerConnect += OnServerConnect;
+            nm.onServerConnect += OnServerConnect;
         }
 
         protected void OnDestroy()
@@ -114,7 +114,7 @@ namespace SyncUtil
             var nm = SyncNetworkManager.singleton;
             if (nm != null)
             {
-                nm._OnServerConnect -= OnServerConnect;
+                nm.onServerConnect -= OnServerConnect;
             }
         }
 

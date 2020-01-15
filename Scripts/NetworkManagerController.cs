@@ -59,8 +59,8 @@ namespace SyncUtil
 
         void StartClient()
         {
-            _networkManager._OnClientError -= OnClientError;
-            _networkManager._OnClientError += OnClientError;
+            _networkManager.onClientError -= OnClientError;
+            _networkManager.onClientError += OnClientError;
 
             _networkManager.StartClient();
         }
