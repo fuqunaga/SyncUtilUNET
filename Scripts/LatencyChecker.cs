@@ -61,7 +61,7 @@ namespace SyncUtil
 
         public void Start()
         {
-            SyncNetworkManager.singleton._OnStartServer += () =>
+            SyncNetworkManager.singleton.onStartServer += () =>
             {
                 NetworkServer.RegisterHandler(CustomMsgType.Latency, (nmsg) =>
                 {
@@ -73,12 +73,12 @@ namespace SyncUtil
                 });
             };
 
-            SyncNetworkManager.singleton._OnServerDisconnect += (conn) =>
+            SyncNetworkManager.singleton.onServerDisconnect += (conn) =>
             {
                 _conectionLatencyTable.Remove(conn.connectionId);
             };
 
-            SyncNetworkManager.singleton._OnStartClient += (client) =>
+            SyncNetworkManager.singleton.onStartClient += (client) =>
             {
                 if (SyncNet.isSlave)
                 {

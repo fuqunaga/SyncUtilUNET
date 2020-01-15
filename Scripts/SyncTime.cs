@@ -32,10 +32,18 @@ namespace SyncUtil
 
         public void Start()
         {
-            SyncNetworkManager.singleton._OnStartClient += (client) =>
+			if(SyncNetworkManager.singleton == null)
+			{
+				Debug.LogWarning("SyncNetworkManager is not in scene");
+				return;
+			}
+			// when a client starts
+            SyncNetworkManager.singleton.onStartClient += (client) =>
             {
+				// if it is a slave
                 if (SyncNet.isSlave)
                 {
+					// register a network handler function that caches the last time msg recieved
                     client.RegisterHandler(CustomMsgType.Time, (netMsg) =>
                     {
                         var msg = netMsg.ReadMessage<SyncTimeMessage>();
@@ -45,9 +53,16 @@ namespace SyncUtil
                         }
                     });
 
+					// start coroutine that will proces recieved network message
                     StopAllCoroutines();
                     StartCoroutine(UpdateTimeClient());
                 }
+            };
+            // in case the server restarts, when the client next connects the server, make sure the client's last message is reset to null, 
+            // otherwise in a rare case when the server app restarts, the server's lastMsg.time will be less than the client's lastMsg.time and time chnages on the server will not sync properly on the client.
+            SyncNetworkManager.singleton.onClientConnect += (networkConn) =>
+            {
+                _lastMsg = null;
             };
         }
 
@@ -59,11 +74,15 @@ namespace SyncUtil
             }
         }
 
+       
+
         IEnumerator UpdateTimeClient()
         {
+            WaitForEndOfFrame waitForEndOfFrame = new WaitForEndOfFrame();
+
             while (true)
             {
-                yield return new WaitForEndOfFrame();  // フレームの最後で_time更新
+                yield return waitForEndOfFrame;  // フレームの最後で_time更新
 
                 if (_lastMsg != null)
                 {

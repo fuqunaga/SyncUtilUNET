@@ -30,13 +30,13 @@ namespace SyncUtil
             var networkManager = SyncNetworkManager.singleton;
 
 
-            networkManager._OnServerConnect += (conn) =>
+            networkManager.onServerConnect += (conn) =>
             {
                 NetworkServer.SendToClient(conn.connectionId, CustomMsgType.NetworkTime, new NetworkTimeMessage() { time = realTime });
             };
 
 
-            networkManager._OnStartClient += (client) =>
+            networkManager.onStartClient += (client) =>
             {
                 if (SyncNet.isSlave)
                 {

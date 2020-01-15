@@ -94,8 +94,8 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaDirect: 0.5
     m_PVRFilteringAtrousPositionSigmaIndirect: 2
     m_PVRFilteringAtrousPositionSigmaAO: 1
-    m_ShowResolutionOverlay: 1
     m_ExportTrainingData: 0
+    m_TrainingDataDestination: TrainingData
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -258,7 +258,7 @@ MonoBehaviour:
   m_AutoCreatePlayer: 0
   m_PlayerSpawnMethod: 0
   m_OfflineScene: Offline
-  m_OnlineScene: 
+  m_OnlineScene: SyncParam
   m_SpawnPrefabs:
   - {fileID: 1087970129871348, guid: 922b63f130b1bf44a85995243a02ef26, type: 3}
   - {fileID: 1552606861858982, guid: 6349d1f70247b7d41b31016a5bc310c1, type: 3}
@@ -318,6 +318,8 @@ MonoBehaviour:
   matchSize: 4
   isNetworkActive: 0
   matchMaker: {fileID: 0}
+  enableLogServer: 0
+  enableLogClient: 1
 --- !u!4 &645329940
 Transform:
   m_ObjectHideFlags: 0

@@ -9,7 +9,7 @@ using UnityEngine.Networking;
 
 namespace SyncUtil
 {
-	[RequireComponent(typeof(SyncNetworkManager))]
+    [RequireComponent(typeof(SyncNetworkManager))]
     public class NetworkManagerController : MonoBehaviour
     {
         #region TypeDefine
@@ -35,7 +35,7 @@ namespace SyncUtil
         public virtual void Start()
         {
             _networkManager = GetComponent<SyncNetworkManager>();
-			Assert.IsTrue(_networkManager);
+            Assert.IsTrue(_networkManager);
 
             if (_bootType != BootType.Manual) StartNetwork(_bootType);
         }
@@ -59,8 +59,8 @@ namespace SyncUtil
 
         void StartClient()
         {
-            _networkManager._OnClientError -= OnClientError;
-            _networkManager._OnClientError += OnClientError;
+            _networkManager.onClientError -= OnClientError;
+            _networkManager.onClientError += OnClientError;
 
             _networkManager.StartClient();
         }
@@ -95,25 +95,37 @@ namespace SyncUtil
             {
                 GUILayout.Label("SyncUtil Manual Boot");
 
-                GUIUtil.Indent(() =>
+                var mgr = _networkManager;
+
+                OnGUINetworkSetting();
+
+                mgr.useSimulator = GUILayout.Toggle(mgr.useSimulator, "Use Network Simulator");
+                if (mgr.useSimulator)
                 {
-                    OnGUINetworkSetting();
+                    mgr.simulatedLatency = GUIUtil.Slider(mgr.simulatedLatency, 1, 400, "Latency[msec]");
+                    mgr.packetLossPercentage = GUIUtil.Slider(mgr.packetLossPercentage, 0f, 20f, "PacketLoss[%]");
+                }
 
-                    var mgr = _networkManager;
-                    mgr.useSimulator = GUILayout.Toggle(mgr.useSimulator, "UseSimulator");
-                    if (mgr.useSimulator)
-                    {
-                        GUIUtil.Indent(() =>
-                        {
-                            mgr.simulatedLatency = GUIUtil.Slider(mgr.simulatedLatency, 1, 400, "Latency[msec]");
-                            mgr.packetLossPercentage = GUIUtil.Slider(mgr.packetLossPercentage, 0f, 20f, "PacketLoss[%]");
-                        });
-                    }
+                GUILayout.Space(16f);
 
-                    if (GUILayout.Button("Host")) { OnNetworkStartByManual(); StartNetwork(BootType.Host); }
-                    if (GUILayout.Button("Client")) { OnNetworkStartByManual(); StartNetwork(BootType.Client); }
-                    if (GUILayout.Button("Server")) { OnNetworkStartByManual(); StartNetwork(BootType.Server); }
-                });
+                GUILayout.Label("Boot Type (Manual. once only):");
+                if (GUILayout.Button("Host (client & server)"))
+                {
+                    OnNetworkStartByManual();
+                    StartNetwork(BootType.Host);
+                }
+
+                if (GUILayout.Button("Client"))
+                {
+                    OnNetworkStartByManual();
+                    StartNetwork(BootType.Client);
+                }
+
+                if (GUILayout.Button("Server"))
+                {
+                    OnNetworkStartByManual();
+                    StartNetwork(BootType.Server);
+                }
             }
         }
 
