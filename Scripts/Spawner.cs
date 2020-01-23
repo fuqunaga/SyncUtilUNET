@@ -21,8 +21,11 @@ namespace SyncUtil
             if (!Application.isPlaying)
             {
                 var nm = _networkManager ?? (_networkManager = FindObjectOfType<NetworkManager>());
-                var diffGo = _prefabs.Where(ni => ni != null).Select(ni => ni.gameObject).Except(nm.spawnPrefabs);
-                nm.spawnPrefabs.AddRange(diffGo);
+                if (nm != null)
+                {
+                    var diffGo = _prefabs.Where(ni => ni != null).Select(ni => ni.gameObject).Except(nm.spawnPrefabs);
+                    nm.spawnPrefabs.AddRange(diffGo);
+                }
             }
         }
 #endif
