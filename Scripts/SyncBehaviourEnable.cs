@@ -45,7 +45,7 @@ namespace SyncUtil
                     mgr.UpdateParam(key, Get(_target));
                 }
 
-                if (SyncNet.isSlave)
+                if (SyncNet.isFollower)
                 {
                     var obj = mgr.GetParam(key, _mode == Mode.Trigger);
                     if (obj != null)

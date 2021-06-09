@@ -41,7 +41,7 @@ namespace SyncUtil
             SyncNetworkManager.singleton.onStartClient += (client) =>
             {
 				// if it is a slave
-                if (SyncNet.isSlave)
+                if (SyncNet.isFollower)
                 {
 					// register a network handler function that caches the last time msg recieved
                     client.RegisterHandler(CustomMsgType.Time, (netMsg) =>

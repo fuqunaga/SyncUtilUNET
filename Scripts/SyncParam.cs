@@ -38,7 +38,7 @@ namespace SyncUtil
                     });
                 }
 
-                if (SyncNet.isSlave)
+                if (SyncNet.isFollower)
                 {
                     fields.ForEach(field =>
                     {
