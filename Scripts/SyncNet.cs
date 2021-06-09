@@ -7,8 +7,14 @@ namespace SyncUtil
 {
     public class SyncNet
     {
-        public static bool isServer => NetworkServer.active;
-        public static bool isClient => NetworkClient.active;
+        /// <summary>
+        /// UNETのクライアントである判定になるように偽装する
+        /// あくまでSyncNetの判定のみに作用するのでちゃんとしたクライアントとしては動作せず注意が必要
+        /// </summary>
+        public static bool isDummyFollower { get; set; }
+
+        public static bool isServer => NetworkServer.active && !isDummyFollower;
+        public static bool isClient => NetworkClient.active || isDummyFollower;
         public static bool isHost => isServer && isClient;
         public static bool isStandAlone => !isServer && !isClient;
 
