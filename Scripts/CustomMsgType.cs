@@ -10,8 +10,8 @@ namespace SyncUtil
         public const short NetworkTime = MsgType.Highest + 2;
         public const short Latency = MsgType.Highest + 3;
         public const short LockStepConsistency = MsgType.Highest + 4;
+        public const short ConnectionIdentity = MsgType.Highest + 5;
 
-
-        public const short Highest = MsgType.Highest + 4;
+        public const short Highest = MsgType.Highest + 5;
     }
 }

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Linq;
 
 namespace SyncUtil
 {
@@ -13,9 +12,10 @@ namespace SyncUtil
         {
             var active = SyncNet.isServerOrStandAlone;
 
-            Enumerable.Range(0, transform.childCount)
-                .Select(idx => transform.GetChild(idx)).ToList()
-                .ForEach(child => child.gameObject.SetActive(active));
+            for (var i = 0; i < transform.childCount; ++i)
+            {
+                transform.GetChild(i).gameObject.SetActive(active);
+            }
         }
     }
 }

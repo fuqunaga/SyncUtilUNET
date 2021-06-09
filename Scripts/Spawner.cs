@@ -45,14 +45,12 @@ namespace SyncUtil
         {
             yield return new WaitUntil(() => NetworkServer.active);
 
-            _prefabs
-            .Select(p => Instantiate(p.gameObject))
-            .ToList()
-            .ForEach(go =>
+            foreach(var prefab in _prefabs)
             {
+                var go = Instantiate(prefab.gameObject);
                 go.transform.SetParent(transform);
                 SyncNet.Spawn(go);
-            });
+            }
         }
     }
 }
