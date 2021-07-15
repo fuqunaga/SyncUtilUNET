@@ -54,7 +54,7 @@ namespace SyncUtil.Example
             };
             lockStep.onMissingCatchUpClient = () => Debug.Log("OnMissingCatchUp at Client. Server will disconnect.");
 
-            lockStep.getHashFunc = () => LockStepHelper.GenerateComputeBufferHash<LifeGame.Data>(_lifeGame.readBufs);
+            lockStep.getHashFunc = () => LockStepHelper.GenerateBufferHash<LifeGame.Data>(_lifeGame.readBufs);
         }
     }
 }

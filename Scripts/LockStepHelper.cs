@@ -7,12 +7,28 @@ namespace SyncUtil
 {
     public static class LockStepHelper
     {
-        public static string GenerateComputeBufferHash<T>(ComputeBuffer cb) where T: struct
+        public static string GenerateBufferHash<T>(GraphicsBuffer buffer) where T : struct
         {
-            var count = cb.count;
+            var count = buffer.count;
             var datas = new T[count];
-            cb.GetData(datas);
+            buffer.GetData(datas);
 
+            return GenerateBufferHash(count, datas);
+        }
+
+
+        public static string GenerateBufferHash<T>(ComputeBuffer buffer) where T : struct
+        {
+            var count = buffer.count;
+            var datas = new T[count];
+            buffer.GetData(datas);
+
+            return GenerateBufferHash(count, datas);
+        }
+
+
+        static string GenerateBufferHash<T>(int count, T[] datas) where T : struct
+        {
             var size = Marshal.SizeOf(typeof(T));
 
             var ptr = Marshal.AllocHGlobal(size);
