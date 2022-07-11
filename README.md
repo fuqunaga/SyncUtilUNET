@@ -1,5 +1,9 @@
 # SyncUtil
-Sync Utilities For UNET  
+Sync Utilities For UNet
+
+
+:warning: [UNet is depreciated by Unity](https://support.unity.com/hc/en-us/articles/360001252086-UNet-Deprecation-FAQ).  
+if you use [Mirror](https://github.com/vis2k/Mirror) instead, please see [SyncUtilForMirror](https://github.com/fuqunaga/SyncUtilForMirror)
   
 
 ## Install Dependencies
